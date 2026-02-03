@@ -1,1 +1,29 @@
 @import "tailwindcss";
+
+@theme {
+  /* --- Mine Shaft Scale --- */
+  --color-mine-shaft-50: #f6f6f6;
+  --color-mine-shaft-100: #e7e7e7;
+  --color-mine-shaft-200: #d1d1d1;
+  --color-mine-shaft-300: #b0b0b0;
+  --color-mine-shaft-400: #888888;
+  --color-mine-shaft-500: #6d6d6d;
+  --color-mine-shaft-600: #5d5d5d;
+  --color-mine-shaft-700: #4f4f4f;
+  --color-mine-shaft-800: #454545;
+  --color-mine-shaft-900: #3d3d3d;
+  --color-mine-shaft-950: #2d2d2d;
+
+  /* --- Bright Sun Scale --- */
+  --color-bright-sun-50: #fffbeb;
+  --color-bright-sun-100: #fff3c6;
+  --color-bright-sun-200: #ffe588;
+  --color-bright-sun-300: #ffd149;
+  --color-bright-sun-400: #ffbd20;
+  --color-bright-sun-500: #f99b07;
+  --color-bright-sun-600: #dd7302;
+  --color-bright-sun-700: #b75006;
+  --color-bright-sun-800: #943c0c;
+  --color-bright-sun-900: #7a330d;
+  --color-bright-sun-950: #461902;
+}
