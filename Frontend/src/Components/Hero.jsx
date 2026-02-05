@@ -1,90 +1,154 @@
-import { Avatar } from "@mantine/core";
+import { Avatar, Divider, Select } from "@mantine/core";
+import { IconSearch } from "@tabler/icons-react";
 import React from "react";
 
 const Hero = () => {
   return (
-    <section className="relative flex min-h-[90vh] w-full flex-col md:flex-row items-center justify-between px-6 lg:px-20 py-10 bg-mine-shaft-950 overflow-hidden">
-      {/* Left Content Area */}
-      <div className="z-10 flex flex-col w-full md:w-3/5 space-y-6">
-        <h1 className="text-5xl lg:text-7xl font-extrabold tracking-tight text-white leading-tight">
-          Find your <span className="text-bright-sun-400">dream job</span>{" "}
-          <br />
+    /* h-full: Fills the flex-1 space. 
+       gap-10: Creates a physical "No-Entry" zone between left and right. 
+       flex-col: Stacks vertically on mobile. */
+    <section className="relative flex h-full w-full flex-col md:flex-row items-center justify-between px-6 lg:px-20 gap-10 md:gap-16 bg-mine-shaft-950 overflow-hidden">
+      {/* LEFT SECTION: 3/5 Portion (60%) */}
+      <div className="z-10 flex flex-col w-full md:w-3/5 space-y-6 lg:space-y-8 mt-10 md:mt-0">
+        <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-white leading-tight">
+          Find your{" "}
+          <span className="text-bright-sun-400 drop-shadow-[0_0_15px_rgba(250,204,21,0.4)]">
+            dream job
+          </span>{" "}
           with us.
         </h1>
 
-        <p className="max-w-xl text-lg lg:text-xl text-gray-400 font-medium leading-relaxed">
-          A good life begins with a good company. Start exploring thousands of
-          job opportunities in one place with our smart search engine.
+        <p className="max-w-xl text-base lg:text-xl text-gray-400 font-medium">
+          Good life begins with a good company. Start exploring thousands of job
+          opportunities in one place with our smart search engine.
         </p>
 
-        {/* Search / CTA Area */}
-        <div className="flex flex-col sm:flex-row gap-4 pt-4">
-          <button className="px-8 py-4 bg-bright-sun-400/80 hover:bg-bright-sun-500 text-black font-very-bold rounded-xl transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(250,204,21,0.3)]">
-            Explore Jobs
-          </button>
-          <button className="px-8 py-4 bg-transparent border border-gray-700 hover:border-bright-sun-400 text-white font-extrabold rounded-xl transition-all">
-            How it works
-          </button>
-        </div>
+        {/* Search Bar */}
+        <div className="flex items-center gap-2 lg:gap-4 bg-mine-shaft-900/40 p-3 lg:p-4 rounded-3xl border border-mine-shaft-800 backdrop-blur-xl w-full lg:w-6/7 shadow-2xl transition-all hover:border-mine-shaft-300">
+          <div className="flex flex-col flex-1 px-2 lg:px-4">
+            <label className="text-[12px] lg:text-[14px] uppercase tracking-wider text-bright-sun-400 font-bold mb-1">
+              Job Title
+            </label>
+            <input
+              type="text"
+              placeholder="Software Engineer"
+              className="bg-transparent text-white outline-none placeholder:text-gray-200/40 text-sm lg:text-base w-full"
+            />
+          </div>
 
-        {/* Simple Trust Badge */}
-        <div className="flex items-center gap-3 pt-6 text-sm text-gray-400">
-          <Avatar.Group spacing="sm">
-            <Avatar
-              src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png"
-              radius="xl"
-              border={2}
-              className="border-mine-shaft-950"
-            />
-            <Avatar
-              src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-2.png"
-              radius="xl"
-              border={2}
-              className="border-mine-shaft-950"
-            />
-            <Avatar
-              src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-3.png"
-              radius="xl"
-              border={2}
-              className="border-mine-shaft-950"
-            />
-            <Avatar
-              radius="xl"
-              className="border-2! border-mine-shaft-950"
-              // 2. Target the text (placeholder) specifically here
+          <Divider
+            orientation="vertical"
+            className="hidden lg:block border-mine-shaft-700 h-10"
+            size="xs"
+          />
+
+          <div className="flex flex-col flex-1 px-2 lg:px-4">
+            <label className="text-[12px] lg:text-[14px] uppercase tracking-wider text-bright-sun-400 font-bold mb-1">
+              Job Type
+            </label>
+            <Select
+              placeholder="Full Time"
+              variant="unstyled"
+              data={["Full Time", "Part Time", "Internship", "Contract"]}
+              defaultValue="Full Time"
+              className="text-white"
               styles={{
-                placeholder: {
-                  color: "#2d2d2d", // This is Mine Shaft 900
-                  fontWeight: 700,
-                  fontSize: "15px",
-                },
+                input: { color: "white", height: "24px", minHeight: "unset" },
               }}
-            >
-              +7k
-            </Avatar>
-          </Avatar.Group>
+            />
+          </div>
 
-          <p className="ml-2">
-            Trusted by{" "}
-            <span className="text-gray-300 font-semibold">10,000+</span>{" "}
-            candidates
-          </p>
+          <button className="flex items-center justify-center h-10 w-10 lg:h-14 lg:w-14 bg-bright-sun-400 hover:bg-bright-sun-500 text-mine-shaft-950 rounded-2xl transition-all transform hover:scale-110 active:scale-95 shadow-lg shrink-0 cursor-pointer">
+            <IconSearch size={24} stroke={3} />
+          </button>
         </div>
       </div>
 
-      {/* Right Image Area */}
-      <div className="relative flex justify-center items-center w-full md:w-2/5 mt-12 md:mt-0">
-        {/* Yellow/White Glow Effect behind image */}
-        <div className="absolute w-80 h-80 bg-bright-sun-400/20 rounded-full blur-[100px]" />
+      {/* RIGHT SECTION: 2/5 Portion (40%) - The "Safe Zone" */}
+      <div className="relative w-full max-w-sm lg:max-w-md md:translate-x-12 lg:translate-x-10 transition-transform duration-300">
+        {/* Inner Container: Floating elements are locked to this relative box */}
+        <div className="relative w-full max-w-sm lg:max-w-md">
+          <img
+            src="/hero-img.png"
+            alt="Hero"
+            className="w-full drop-shadow-[0_20px_50px_rgba(250,204,21,0.15)] animate-float"
+          />
 
-        {/* Subtle White Sparkle Glow */}
-        <div className="absolute w-40 h-40 bg-white/10 rounded-full blur-[60px] translate-x-10 -translate-y-10" />
+          {/* COMPACT FLOATING CARD: Software Engineer */}
+          {/* Changed 'left' to percentages so it stays relative to the IMAGE, not the screen */}
+          <div className="absolute top-[28%] left-[-24%] z-20 bg-mine-shaft-900/40 border border-bright-sun-200/50 p-2 lg:p-2 rounded-2xl backdrop-blur-sm w-44 md:w-60 shadow-2xl animate-float transform scale-90 lg:scale-100">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="p-1.5 bg-mine-shaft-800/60 rounded-lg border border-white/5 shrink-0">
+                <Avatar
+                  src="https://i.pinimg.com/originals/68/3d/9a/683d9a1a8150ee8b29bfd25d46804605.png"
+                  radius="sm"
+                  size="md"
+                />
+              </div>
+              <div className="overflow-hidden">
+                <h3 className="text-white font-bold text-[11px] lg:text-sm leading-tight truncate">
+                  Software Engineer
+                </h3>
+                <p className="text-[9px] lg:text-[10px] text-gray-400 truncate">
+                  Google • New York
+                </p>
+              </div>
+            </div>
+            <div className="flex justify-between text-[8px] lg:text-[10px] text-gray-400 border-t border-white/10 px-2 pt-2">
+              <span>1 day ago</span>
+              <span className="text-bright-sun-400 font-semibold">
+                120 Applicants
+              </span>
+            </div>
+          </div>
 
-        <img
-          src="/hero-img.png"
-          alt="Job search illustration"
-          className="relative z-10 w-full drop-shadow-[0_20px_50px_rgba(250,204,21,0.2)] animate-float"
-        />
+          {/* COMPACT TRUSTED BADGE: Bottom Right */}
+          <div className="absolute bottom-[4%] -right-[-2%] z-20 bg-mine-shaft-900/40 border border-bright-sun-300/50 px-3 py-2 rounded-2xl backdrop-blur-sm flex flex-col items-center gap-1 shadow-2xl animate-float [animation-delay:1s] transform scale-90 lg:scale-100">
+            <Avatar.Group spacing="xs">
+              <Avatar
+                src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-9.png"
+                size="md"
+                radius="xl"
+                className="border-mine-shaft-950!"
+              />
+              <Avatar
+                src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-6.png"
+                size="md"
+                radius="xl"
+                className="border-mine-shaft-950!"
+              />
+              <Avatar
+                src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png"
+                size="md"
+                radius="xl"
+                className="border-mine-shaft-950!"
+              />
+              <Avatar
+                radius="xl"
+                size="md"
+                className="border-mine-shaft-950! bg-mine-shaft-100!"
+                styles={{
+                  placeholder: {
+                    color: "#2d2d2d",
+                    fontSize: "10px",
+                    fontWeight: 900,
+                  },
+                }}
+              >
+                +10k
+              </Avatar>
+            </Avatar.Group>
+
+            <div className="text-center">
+              <p className="text-[9px] text-gray-200 uppercase font-bold tracking-wide">
+                Trusted by
+              </p>
+              <p className="text-[10px] lg:text-[12px] font-bold text-bright-sun-400">
+                10k+ Candidates
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

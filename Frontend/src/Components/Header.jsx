@@ -1,36 +1,43 @@
 import React from "react";
-import { IconReportSearch } from "@tabler/icons-react";
-import { IconBell } from "@tabler/icons-react";
-import { IconSettings } from "@tabler/icons-react";
+import { IconReportSearch, IconBell, IconSettings } from "@tabler/icons-react";
 import { Avatar, Indicator } from "@mantine/core";
 import NavLinks from "./NavLinks";
 
 const Header = () => {
   return (
-    <div className="w-full bg-mine-shaft-950 h-20 text-white flex items-center justify-between px-6 text-xl">
-      <div className="flex items-center gap-2 text-bright-sun-400">
-        <IconReportSearch stroke={1.5} className="h-8 w-8" />{" "}
-        <div className="text-2xl font-semibold">Be On Board</div>
+    <nav className="w-full bg-mine-shaft-950 h-18 text-white flex items-center justify-between px-6 lg:px-20 border-b border-mine-shaft-900 z-50">
+      {/* Logo Section - Self-centered vertically */}
+      <div className="flex items-center gap-2 text-bright-sun-400 cursor-pointer shrink-0 py-4">
+        <IconReportSearch stroke={2} className="h-10 w-10" />
+        <div className="text-2xl font-bold tracking-tighter hidden sm:block">
+          Be On Board
+        </div>
       </div>
-      <NavLinks />
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2">
-          <div>
-            <Avatar src="avatar.png" alt="it's me" />
+
+      {/* Center NavLinks - No padding here so links can reach the top-0 border */}
+      <div className="hidden md:flex items-center h-full">
+        <NavLinks />
+      </div>
+
+      {/* Profile & Icons Section - Self-centered vertically */}
+      <div className="flex items-center gap-3 lg:gap-6 py-4">
+        <div className="flex items-center gap-3 bg-mine-shaft-900/50 py-2 px-4 rounded-full border border-mine-shaft-800 hover:bg-mine-shaft-800 transition-all cursor-pointer">
+          <Avatar src="avatar.png" alt="Profile" size="sm" radius="xl" />
+          <div className="text-sm font-semibold hidden lg:block">Profile</div>
+        </div>
+
+        <div className="flex items-center gap-2 lg:gap-3">
+          <div className="bg-mine-shaft-900 p-2.5 rounded-full text-gray-400 hover:text-bright-sun-400 cursor-pointer transition-all">
+            <IconSettings stroke={1.5} size={22} />
           </div>
-          <div>Profile</div>
-        </div>
-        <div className="bg-mine-shaft-900 p-1.5 rounded-full">
-          <IconSettings stroke={1.5} />
-        </div>
-        <div className="bg-mine-shaft-900 p-1.5 rounded-full">
-          <Indicator color="red" offset={6} size={8} processing>
-            <IconBell stroke={1.5} />
-          </Indicator>
+          <div className="bg-mine-shaft-900 p-2.5 rounded-full text-gray-400 hover:text-bright-sun-400 cursor-pointer transition-all">
+            <Indicator color="red" offset={5} size={8} processing>
+              <IconBell stroke={1.5} size={22} />
+            </Indicator>
+          </div>
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
-
 export default Header;
