@@ -1,3 +1,19 @@
+/*
+Project Overview & Status
+
+1. Environment Setup
+   - Initialized React project using Vite.
+   - Installed Tailwind CSS, Mantine UI, Redux Toolkit, and React Router DOM.
+
+2. Existing Project Structure
+   - Entry Points: src/main.jsx, src/App.jsx
+   - Components: Header.jsx, Hero.jsx, NavLinks.jsx
+   - Pages: HomePage.jsx
+
+3. Next Steps
+   - Ready to implement specific UI features and logic.
+*/
+
 import { Box, Container, Slider, Text } from "@mantine/core";
 import React, { useState } from "react";
 
