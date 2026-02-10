@@ -22,9 +22,9 @@ const companies = [
 
 const Companies = () => {
     return (
-        <div className="mt-20 pb-8 bg-mine-shaft-950 overflow-hidden">
+        <div className="mt-20 pb-5 bg-mine-shaft-950 overflow-hidden">
             {/* Header Text */}
-            <div className="text-center mb-10 mt-10">
+            <div className="text-center my-10">
                 <h2 className="text-mine-shaft-300 text-lg md:text-2xl font-semibold tracking-[0.25em] uppercase">
                     Trusted by <span className="text-bright-sun-400 font-bold tracking-[0.2em] drop-shadow-[0_0_15px_rgba(250,250,21,0.4)]">1000+</span> Companies
                 </h2>

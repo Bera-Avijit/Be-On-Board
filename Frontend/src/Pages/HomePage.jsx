@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../Components/Header";
 import Hero from "../Components/Hero";
 import Companies from "../Components/Companies";
+import JobCategory from "../Components/JobCategory";
 
 const HomePage = () => {
   return (
@@ -18,6 +19,7 @@ const HomePage = () => {
       <main className="flex-1 w-full">
         <Hero />
         <Companies />
+        <JobCategory />
       </main>
     </div>
   );
