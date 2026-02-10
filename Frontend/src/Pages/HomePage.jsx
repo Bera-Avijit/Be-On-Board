@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../Components/Header";
 import Hero from "../Components/Hero";
+import Companies from "../Components/Companies";
 
 const HomePage = () => {
   return (
@@ -8,7 +9,7 @@ const HomePage = () => {
       h-screen: Forces the div to be exactly the height of the window.
       overflow-hidden: Prevents "accidental" scrolls from floating animations.
     */
-    <div className="flex flex-col h-screen w-full bg-mine-shaft-950 font-['Poppins'] overflow-hidden">
+    <div className="flex flex-col min-h-screen w-full bg-mine-shaft-950 font-['Poppins']">
       <Header />
 
       {/* flex-1: This tells the Hero container to grow and fill 
@@ -16,6 +17,7 @@ const HomePage = () => {
       */}
       <main className="flex-1 w-full">
         <Hero />
+        <Companies />
       </main>
     </div>
   );
