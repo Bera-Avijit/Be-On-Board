@@ -32,7 +32,7 @@ const WorkingSteps = () => {
                 <h2 className="text-mine-shaft-300 text-lg md:text-3xl font-semibold tracking-wide uppercase">
                     How it <span className="text-bright-sun-400 font-extrabold tracking-widest drop-shadow-[0_0_15px_rgba(250,250,21,0.4)]">Works</span>
                 </h2>
-                <p className='text-xs md:text-sm font-medium text-mine-shaft-400 tracking-wide mt-2 w-full md:w-2/3 mx-auto'>
+                <p className='text-xs md:text-base font-medium text-mine-shaft-400 tracking-wide mt-2 w-full md:w-2/3 mx-auto'>
                     Follow these simple steps to find and land your next big opportunity.<br />We've streamlined the process just for you.
                 </p>
             </div>

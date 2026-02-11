@@ -4,6 +4,7 @@ import Hero from "../Components/Hero";
 import Companies from "../Components/Companies";
 import JobCategory from "../Components/JobCategory";
 import WorkingSteps from "../Components/WorkingSteps";
+import Testimonials from "../Components/Testimonials";
 
 const HomePage = () => {
   return (
@@ -22,6 +23,7 @@ const HomePage = () => {
         <Companies />
         <JobCategory />
         <WorkingSteps />
+        <Testimonials />
       </main>
     </div>
   );
