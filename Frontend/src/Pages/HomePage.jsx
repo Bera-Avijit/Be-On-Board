@@ -5,6 +5,7 @@ import Companies from "../Components/Companies";
 import JobCategory from "../Components/JobCategory";
 import WorkingSteps from "../Components/WorkingSteps";
 import Testimonials from "../Components/Testimonials";
+import Subscribe from "../Components/Subscribe";
 
 const HomePage = () => {
   return (
@@ -24,6 +25,7 @@ const HomePage = () => {
         <JobCategory />
         <WorkingSteps />
         <Testimonials />
+        <Subscribe />
       </main>
     </div>
   );
