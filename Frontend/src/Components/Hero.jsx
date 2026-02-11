@@ -9,7 +9,7 @@ const Hero = () => {
        flex-col: Stacks vertically on mobile. */
     <section className="relative flex h-full w-full flex-col md:flex-row items-center justify-between px-6 lg:px-20 gap-10 md:gap-16 bg-mine-shaft-950 overflow-hidden">
       {/* LEFT SECTION: 3/5 Portion (60%) */}
-      <div className="z-10 flex flex-col w-full md:w-3/5 space-y-6 lg:space-y-8 mt-10 md:mt-0">
+      <div className="z-10 flex flex-col w-full md:w-3/5 space-y-6 lg:space-y-8 mt-10 md:mt-0 md:pt-4">
         <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-white leading-tight">
           Find your{" "}
           <span className="text-bright-sun-400 drop-shadow-[0_0_15px_rgba(250,204,21,0.4)]">

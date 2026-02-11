@@ -3,6 +3,7 @@ import Header from "../Components/Header";
 import Hero from "../Components/Hero";
 import Companies from "../Components/Companies";
 import JobCategory from "../Components/JobCategory";
+import WorkingSteps from "../Components/WorkingSteps";
 
 const HomePage = () => {
   return (
@@ -20,6 +21,7 @@ const HomePage = () => {
         <Hero />
         <Companies />
         <JobCategory />
+        <WorkingSteps />
       </main>
     </div>
   );
