@@ -6,6 +6,7 @@ import JobCategory from "../Components/JobCategory";
 import WorkingSteps from "../Components/WorkingSteps";
 import Testimonials from "../Components/Testimonials";
 import Subscribe from "../Components/Subscribe";
+import Footer from "../Components/Footer";
 
 const HomePage = () => {
   return (
@@ -26,6 +27,7 @@ const HomePage = () => {
         <WorkingSteps />
         <Testimonials />
         <Subscribe />
+        <Footer />
       </main>
     </div>
   );
