@@ -2,8 +2,8 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import "./App.css";
 import HomePage from "./Pages/HomePage";
 import FindJobs from "./Pages/FindJobs";
-import Header from "./Components/Header";
-import Footer from "./Components/Footer";
+import Header from "./Components/PublicComponents/Header";
+import Footer from "./Components/PublicComponents/Footer";
 
 const Layout = () => {
   return (
