@@ -42,3 +42,24 @@ body {
   --color-bright-sun-900: #7a330d;
   --color-bright-sun-950: #461902;
 }
+
+/* --- Custom Scrollbar Utility --- */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  /* Dim whitish */
+  border-radius: 100px;
+  /* Smooth oval */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+  /* Subtle highlight */
+}

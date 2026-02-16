@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconFileText, IconSearch, IconSend, IconDiscountCheck } from '@tabler/icons-react';
-import howItWorksImg from "../assets/how_it_works.png"
+import howItWorksImg from "../../assets/how_it_works.png"
 
 const steps = [
     {
@@ -28,7 +28,7 @@ const steps = [
 const WorkingSteps = () => {
     return (
         <div className="bg-mine-shaft-950 px-4 md:px-20 py-10">
-            <div className="text-center mb-6">
+            <div className="text-center mb-10">
                 <h2 className="text-mine-shaft-300 text-lg md:text-3xl font-semibold tracking-wide uppercase">
                     How it <span className="text-bright-sun-400 font-extrabold tracking-widest drop-shadow-[0_0_15px_rgba(250,250,21,0.4)]">Works</span>
                 </h2>
@@ -37,9 +37,9 @@ const WorkingSteps = () => {
                 </p>
             </div>
 
-            <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-24 max-w-7xl mx-auto">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-12 lg:gap-24 max-w-7xl mx-auto">
                 {/* Left Side: Image centered in its half */}
-                <div className="w-full lg:w-1/2 flex justify-center">
+                <div className="w-full md:w-1/2 flex justify-center">
                     <div className="relative group flex justify-center items-center">
                         {/* Dynamic Background Glow on Hover */}
                         <div className="absolute inset-0 bg-bright-sun-400/0 rounded-3xl blur-[80px] group-hover:bg-bright-sun-400/15 transition-all duration-700 pointer-events-none"></div>
@@ -56,7 +56,7 @@ const WorkingSteps = () => {
                 </div>
 
                 {/* Right Side: Steps centered in its half */}
-                <div className="w-full lg:w-1/2 flex justify-center">
+                <div className="w-full md:w-1/2 flex justify-center">
                     <div className="w-full max-w-[450px] flex flex-col gap-4">
                         {steps.map((step, index) => (
                             <div
