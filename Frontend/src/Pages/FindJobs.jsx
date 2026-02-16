@@ -10,7 +10,7 @@ const FindJobs = () => {
         "Location": [],
         "Experience": null,
         "Job Type": null,
-        "Salary": [15000, 350000]
+        "Salary": [0, 200]
     });
 
     const handleFilterChange = (title, value) => {
@@ -23,7 +23,7 @@ const FindJobs = () => {
             "Location": [],
             "Experience": null,
             "Job Type": null,
-            "Salary": [15000, 350000]
+            "Salary": [0, 200]
         });
         setSortOption('Relevance');
     };
@@ -32,7 +32,7 @@ const FindJobs = () => {
         <div className="min-h-screen bg-mine-shaft-950 font-['Poppins']">
             <div className="max-w-7xl mx-auto px-4 py-8">
                 <SearchFilter filters={filters} onFilterChange={handleFilterChange} />
-                <SortJobs onSortChange={setSortOption} />
+                <SortJobs onSortChange={setSortOption} filters={filters} resetFilters={resetFilters} />
                 <Jobs filters={filters} sortOption={sortOption} resetFilters={resetFilters} />
             </div>
         </div>

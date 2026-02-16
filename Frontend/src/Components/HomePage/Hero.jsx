@@ -7,7 +7,7 @@ const Hero = () => {
     /* h-full: Fills the flex-1 space. 
        gap-10: Creates a physical "No-Entry" zone between left and right. 
        flex-col: Stacks vertically on mobile. */
-    <section className="relative flex h-full w-full flex-col md:flex-row items-center justify-between px-6 lg:px-20 gap-10 md:gap-16 bg-mine-shaft-950 overflow-hidden">
+    <section className="relative flex h-full w-full flex-col md:flex-row items-center justify-between px-6 lg:px-20 gap-10 md:gap-16 bg-mine-shaft-950">
       {/* LEFT SECTION: 3/5 Portion (60%) */}
       <div className="z-10 flex flex-col w-full md:w-3/5 space-y-6 lg:space-y-8 mt-10 md:mt-0 md:pt-4">
         <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-white leading-tight">
@@ -24,7 +24,7 @@ const Hero = () => {
         </p>
 
         {/* Search Bar */}
-        <div className="flex items-center gap-2 lg:gap-4 bg-mine-shaft-900/40 p-3 lg:p-4 rounded-3xl border border-mine-shaft-800 backdrop-blur-xl w-full lg:w-6/7 shadow-2xl transition-all hover:border-mine-shaft-300">
+        <div className="flex items-center gap-2 lg:gap-4 bg-mine-shaft-900/40 p-3 lg:p-4 rounded-3xl border border-mine-shaft-800 backdrop-blur-xl w-full lg:w-6/7 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.6)] transition-all hover:border-mine-shaft-300">
           <div className="flex flex-col flex-1 px-2 lg:px-4">
             <label className="text-[12px] lg:text-[14px] uppercase tracking-wider text-bright-sun-400 font-bold mb-1">
               Job Title
@@ -32,7 +32,7 @@ const Hero = () => {
             <input
               type="text"
               placeholder="Software Engineer"
-              className="bg-transparent text-white outline-none placeholder:text-gray-200/40 text-sm lg:text-base w-full"
+              className="bg-transparent text-white outline-none placeholder:text-gray-200/40 text-sm lg:text-base w-full font-semibold"
             />
           </div>
 
@@ -42,7 +42,7 @@ const Hero = () => {
             size="xs"
           />
 
-          <div className="flex flex-col flex-1 px-2 lg:px-4">
+          <div className="flex flex-col flex-1 px-2 lg:px-4 border-l lg:border-l-0 border-mine-shaft-800 lg:border-none">
             <label className="text-[12px] lg:text-[14px] uppercase tracking-wider text-bright-sun-400 font-bold mb-1">
               Job Type
             </label>
@@ -53,7 +53,35 @@ const Hero = () => {
               defaultValue="Full Time"
               className="text-white"
               styles={{
-                input: { color: "white", height: "24px", minHeight: "unset" },
+                input: { color: "white", height: "24px", minHeight: "unset", fontWeight: 700 },
+                dropdown: {
+                  backgroundColor: "#0a0a0a",
+                  border: "1px solid #1f1f1f",
+                  borderRadius: "12px",
+                  padding: '4px',
+                  zIndex: 1000,
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.5)' // Added for better depth
+                },
+                option: {
+                  color: "#9ca3af", // mine-shaft-400 equivalent
+                  fontWeight: 700,
+                  borderRadius: '8px',
+                  transition: 'all 0.2s ease',
+                  // Default Hover (Unselected)
+                  '&[data-hovered]': {
+                    backgroundColor: "#1a1a1a !important", // Very dark grey/black
+                    color: "#fae62d !important" // Bright Sun Yellow for readability
+                  },
+                  // Selected State
+                  '&[data-selected]': {
+                    backgroundColor: "#fae62d !important",
+                    color: "#000000 !important",
+                    '&[data-hovered]': {
+                      backgroundColor: "#e5d122 !important", // Slightly darker yellow on hover if already selected
+                      color: "#000000 !important"
+                    }
+                  }
+                }
               }}
             />
           </div>

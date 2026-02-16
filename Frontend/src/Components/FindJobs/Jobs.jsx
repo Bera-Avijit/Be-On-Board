@@ -57,7 +57,7 @@ const Jobs = ({ filters, sortOption, resetFilters }) => {
     const processedJobs = getProcessedJobs();
 
     return (
-        <div className="py-6">
+        <div className="py-6 min-h-[500px]">
             {processedJobs.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 transition-all duration-300">
                     {processedJobs.map((job) => (

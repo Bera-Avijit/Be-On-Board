@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Text, TextInput, Loader, RangeSlider, Group } from '@mantine/core';
-import { IconSearch, IconMapPin, IconBriefcase, IconClock, IconMoneybag, IconChevronDown, IconCheck } from '@tabler/icons-react';
+import { IconSearch, IconMapPin, IconBriefcase, IconClock, IconMoneybag, IconChevronDown, IconCheck, IconSquare, IconSquareCheckFilled, IconCircle, IconCircleDot } from '@tabler/icons-react';
 
 const LOCAL_DATA = {
     "Job Role": [
@@ -122,7 +122,7 @@ const FilterDropdown = ({ option, selected, onSelect }) => {
             </div>
 
             {isOpen && (
-                <div className="absolute top-[110%] left-0 w-full z-[100] bg-[#0f0f0f] border border-mine-shaft-800 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden">
+                <div className="absolute top-[110%] left-0 w-full z-100 bg-[#0f0f0f] border border-mine-shaft-800 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden">
                     {option.searchable && (
                         <div className="p-2 border-b border-mine-shaft-800 bg-mine-shaft-950/50 flex items-center gap-2">
                             <TextInput
@@ -134,7 +134,7 @@ const FilterDropdown = ({ option, selected, onSelect }) => {
                                 className="flex-1"
                                 autoComplete="off"
                                 autoFocus
-                                leftSection={isLoading ? <Loader size={14} color="yellow" /> : <IconSearch size={14} className="!text-mine-shaft-500" />}
+                                leftSection={isLoading ? <Loader size={14} color="yellow" /> : <IconSearch size={14} className="text-mine-shaft-500!" />}
                                 styles={{ input: { color: '#ffffff', paddingLeft: '32px', fontWeight: 700 } }}
                             />
                         </div>
@@ -157,12 +157,18 @@ const FilterDropdown = ({ option, selected, onSelect }) => {
                                             onClick={() => handleSelect(item)}
                                             className={`flex items-center gap-3 px-3 py-2.5 cursor-pointer transition-all duration-150 group/item ${isActive ? 'bg-bright-sun-400/5' : 'hover:bg-mine-shaft-900/80'}`}
                                         >
-                                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all ${isActive ? 'bg-bright-sun-400! border-bright-sun-400!' : 'border-mine-shaft-700! bg-mine-shaft-900!'}`}>
-                                                {isActive && (
-                                                    option.multiple ? (
-                                                        <IconCheck size={12} stroke={4} className="text-mine-shaft-950!" />
+                                            <div className="flex items-center justify-center transition-all">
+                                                {option.multiple ? (
+                                                    isActive ? (
+                                                        <IconSquareCheckFilled size={18} className="text-bright-sun-400!" />
                                                     ) : (
-                                                        <div className="w-1.5 h-1.5 rounded-full bg-mine-shaft-950" />
+                                                        <IconSquare size={18} className="text-mine-shaft-700!" />
+                                                    )
+                                                ) : (
+                                                    isActive ? (
+                                                        <IconCircleDot size={18} className="text-bright-sun-400!" />
+                                                    ) : (
+                                                        <IconCircle size={18} className="text-mine-shaft-700!" />
                                                     )
                                                 )}
                                             </div>
@@ -227,15 +233,15 @@ const SearchFilter = ({ filters, onFilterChange }) => {
                         <IconMoneybag size={15} className="text-bright-sun-400!" />
                         <span className="text-mine-shaft-200! text-[12px] font-bold uppercase">Salary</span>
                     </Group>
-                    <Text size="12px" fw={800} className="text-bright-sun-300!">₹{filters.Salary[0].toLocaleString()} - ₹{filters.Salary[1].toLocaleString()}</Text>
+                    <Text size="12px" fw={800} className="text-bright-sun-300!">{filters.Salary[0]} LPA - {filters.Salary[1]} LPA</Text>
                 </div>
                 <div className="px-1">
                     <RangeSlider
                         value={filters.Salary}
                         onChange={(val) => onFilterChange("Salary", val)}
                         min={0}
-                        max={500000}
-                        step={5000}
+                        max={200}
+                        step={1}
                         label={null}
                         styles={{
                             track: { backgroundColor: '#1c1c1c' },

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Group, Text, Menu, UnstyledButton } from '@mantine/core';
-import { IconAdjustments, IconChevronDown } from '@tabler/icons-react';
+import { Group, Text, Menu, UnstyledButton, Button } from '@mantine/core';
+import { IconAdjustments, IconChevronDown, IconX } from '@tabler/icons-react';
 
-const SortJobs = ({ onSortChange }) => {
+const SortJobs = ({ onSortChange, filters, resetFilters }) => {
     const [selectedSort, setSelectedSort] = useState('Relevance');
     const sortOptions = ['Relevance', 'Most Recent', 'Salary (Low to High)', 'Salary (High to Low)'];
 
@@ -11,12 +11,33 @@ const SortJobs = ({ onSortChange }) => {
         if (onSortChange) onSortChange(option);
     };
 
+    const isFilterApplied = filters["Job Role"].length > 0 ||
+        filters["Location"].length > 0 ||
+        filters["Experience"] !== null ||
+        filters["Job Type"] !== null ||
+        filters.Salary[0] !== 0 ||
+        filters.Salary[1] !== 200;
+
     return (
         <div className="flex items-center justify-between mt-5 py-5">
-            <div>
-                <Text size="xl" fw={800} className="text-mine-shaft-100! font-['Poppins']! tracking-tight!">
-                    Recommended Jobs
-                </Text>
+            <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-3">
+                    <Text size="xl" fw={800} className="text-mine-shaft-100! font-['Poppins']! tracking-tight!">
+                        Recommended Jobs
+                    </Text>
+                    {isFilterApplied && (
+                        <Button
+                            variant="subtle"
+                            color="red"
+                            leftSection={<IconX size={14} stroke={3} />}
+                            onClick={resetFilters}
+                            size="xs"
+                            className="hover:bg-red-500/10! text-red-500! font-black! uppercase! tracking-widest! transition-all! h-7! px-2!"
+                        >
+                            Clear All
+                        </Button>
+                    )}
+                </div>
                 <Text size="xs" className="text-mine-shaft-400! font-medium!">
                     Showing latest opportunities matched to your profile
                 </Text>
