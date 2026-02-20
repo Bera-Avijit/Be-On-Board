@@ -7,7 +7,7 @@ export const TalentAbout = ({ about }) => (
             <div className="h-1 w-12 bg-bright-sun-400 rounded-full"></div>
             <Text size="2xl" fw={900} className="text-mine-shaft-50 tracking-tight uppercase">About Candidate</Text>
         </div>
-        <Text size="md" className="text-mine-shaft-200 leading-relaxed text-justify bg-mine-shaft-900/10 !px-6 !py-4 rounded-2xl border border-mine-shaft-800/50 backdrop-blur-sm">
+        <Text size="md" className="text-mine-shaft-200 leading-relaxed text-justify bg-mine-shaft-900/10 px-6! py-4! rounded-2xl border border-mine-shaft-800/50 backdrop-blur-sm">
             {about}
         </Text>
     </div>
@@ -19,7 +19,7 @@ export const TalentSkills = ({ skills }) => (
             <div className="h-1 w-12 bg-bright-sun-400 rounded-full"></div>
             <Text size="2xl" fw={900} className="text-mine-shaft-50 tracking-tight uppercase">Technical Skills</Text>
         </div>
-        <Group gap="sm" className="bg-mine-shaft-900/10 !px-6 !py-4 rounded-2xl border border-mine-shaft-800/50">
+        <Group gap="sm" className="bg-mine-shaft-900/10 px-6! py-4! rounded-2xl border border-mine-shaft-800/50">
             {skills?.map((skill, index) => (
                 <Badge
                     key={index}
