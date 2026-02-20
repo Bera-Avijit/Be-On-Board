@@ -15,7 +15,7 @@ const TalentExperience = ({ experience }) => {
                         {/* Timeline point */}
                         <div className="absolute -left-[27px] top-4 w-5 h-5 bg-mine-shaft-950 border-4 border-bright-sun-400 rounded-full z-10 group-hover:scale-125 transition-transform"></div>
 
-                        <div className="flex gap-6 bg-mine-shaft-900/20 !px-6 !py-4 rounded-3xl border border-mine-shaft-800/40 hover:border-mine-shaft-600 transition-all">
+                        <div className="flex gap-6 bg-mine-shaft-900/20 px-6! py-4! rounded-3xl border border-mine-shaft-800/40 hover:border-mine-shaft-600 transition-all">
                             <div className="w-16 h-16 rounded-2xl bg-mine-shaft-950 border border-mine-shaft-800 p-3 shrink-0 shadow-lg flex items-center justify-center">
                                 <Image
                                     src={exp.company === "Google" ? "https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png" : "https://cdn-icons-png.flaticon.com/512/732/732221.png"}
@@ -28,7 +28,7 @@ const TalentExperience = ({ experience }) => {
                                         <Text size="xl" fw={800} className="text-mine-shaft-100 group-hover:text-bright-sun-400 transition-colors">{exp.title}</Text>
                                         <Text size="sm" fw={700} className="text-mine-shaft-300 opacity-90">{exp.company} • {exp.location}</Text>
                                     </div>
-                                    <Text size="xs" fw={900} className="text-mine-shaft-950! bg-bright-sun-300 !px-3 !py-1 rounded-full uppercase tracking-tighter shadow-sm whitespace-nowrap">
+                                    <Text size="xs" fw={900} className="text-mine-shaft-950! bg-bright-sun-300 px-3! py-1! rounded-full uppercase tracking-tighter shadow-sm whitespace-nowrap">
                                         {exp.startDate} - {exp.endDate}
                                     </Text>
                                 </div>
