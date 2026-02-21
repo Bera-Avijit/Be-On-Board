@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom';
 
 const jobCategories = [
     {
@@ -82,6 +83,7 @@ const jobCategories = [
 ];
 
 const JobCategory = () => {
+    const navigate = useNavigate();
     const scrollRef = useRef(null);
     const [showLeftArrow, setShowLeftArrow] = useState(false);
     const [showRightArrow, setShowRightArrow] = useState(true);
@@ -116,6 +118,16 @@ const JobCategory = () => {
         }
     };
 
+    const handleCategoryClick = (categoryName) => {
+        navigate("/find-jobs", {
+            state: {
+                searchCriteria: {
+                    jobTitle: categoryName
+                }
+            }
+        });
+    };
+
     return (
         <div className='mt-20 pb-12 bg-mine-shaft-950 px-4 md:px-10 relative group/section'>
             <div className="text-center">
@@ -145,6 +157,7 @@ const JobCategory = () => {
                     {jobCategories.map((category) => (
                         <div
                             key={category.id}
+                            onClick={() => handleCategoryClick(category.name)}
                             className="flex flex-col items-center text-center min-w-[240px] md:min-w-[280px] lg:min-w-[calc(22.5%-20px)] bg-mine-shaft-900/40 backdrop-blur-xl border border-mine-shaft-800 rounded-2xl p-5 transition-all duration-300 hover:scale-[1.05] hover:border-bright-sun-400/40 hover:shadow-[0_0_30px_rgba(250,250,21,0.1)] group cursor-pointer"
                         >
                             <div className="w-14 h-14 bg-mine-shaft-800/50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-bright-sun-400/10 transition-colors duration-300">

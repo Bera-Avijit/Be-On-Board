@@ -6,6 +6,9 @@ import Header from "./Components/PublicComponents/Header";
 import Footer from "./Components/PublicComponents/Footer";
 import FindTalents from "./Pages/FindTalents";
 import TalentProfilePage from "./Pages/TalentProfilePage";
+import PostJob from "./Pages/PostJob";
+import JobDetailsPage from "./Pages/JobDetailsPage";
+import AboutUs from "./Pages/AboutUs";
 
 const Layout = () => {
     return (
@@ -40,6 +43,18 @@ const router = createBrowserRouter([
                 path: "talent-profile/:id",
                 element: <TalentProfilePage />,
             },
+            {
+                path: "post-jobs",
+                element: <PostJob />,
+            },
+            {
+                path: "job-details/:id",
+                element: <JobDetailsPage />,
+            },
+            {
+                path: "about-us",
+                element: <AboutUs />,
+            },
         ],
     },
     {
@@ -57,3 +72,5 @@ function App() {
 }
 
 export default App;
+
+
