@@ -7,7 +7,8 @@ import { JOBS_DATA } from '../../Data/JobsData';
 const Jobs = ({ filters, sortOption, resetFilters }) => {
     // Filter and Sort logic
     const getProcessedJobs = () => {
-        let jobs = [...JOBS_DATA];
+        const publishedJobs = JSON.parse(localStorage.getItem('publishedJobs') || '[]');
+        let jobs = [...publishedJobs, ...JOBS_DATA];
 
         // 1. Filtering Logic
         if (filters["Job Role"] && filters["Job Role"].length > 0) {

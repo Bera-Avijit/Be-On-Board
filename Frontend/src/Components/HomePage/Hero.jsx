@@ -1,8 +1,24 @@
 import { Avatar, Divider, Select } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const navigate = useNavigate();
+  const [jobTitle, setJobTitle] = useState("");
+  const [jobType, setJobType] = useState("Full Time");
+
+  const handleSearch = () => {
+    navigate("/find-jobs", {
+      state: {
+        searchCriteria: {
+          jobTitle: jobTitle,
+          jobType: jobType
+        }
+      }
+    });
+  };
+
   return (
     /* h-full: Fills the flex-1 space. 
        gap-10: Creates a physical "No-Entry" zone between left and right. 
@@ -32,6 +48,8 @@ const Hero = () => {
             <input
               type="text"
               placeholder="Software Engineer"
+              value={jobTitle}
+              onChange={(e) => setJobTitle(e.target.value)}
               className="bg-transparent text-white outline-none placeholder:text-gray-200/40 text-sm lg:text-base w-full font-semibold"
             />
           </div>
@@ -50,7 +68,8 @@ const Hero = () => {
               placeholder="Full Time"
               variant="unstyled"
               data={["Full Time", "Part Time", "Internship", "Contract"]}
-              defaultValue="Full Time"
+              value={jobType}
+              onChange={setJobType}
               className="text-white"
               styles={{
                 input: { color: "white", height: "24px", minHeight: "unset", fontWeight: 700 },
@@ -86,7 +105,10 @@ const Hero = () => {
             />
           </div>
 
-          <button className="flex items-center justify-center h-10 w-10 lg:h-14 lg:w-14 bg-bright-sun-400 hover:bg-bright-sun-500 text-mine-shaft-950 rounded-2xl transition-all transform hover:scale-110 active:scale-95 shadow-lg shrink-0 cursor-pointer">
+          <button
+            onClick={handleSearch}
+            className="flex items-center justify-center h-10 w-10 lg:h-14 lg:w-14 bg-bright-sun-400 hover:bg-bright-sun-500 text-mine-shaft-950 rounded-2xl transition-all transform hover:scale-110 active:scale-95 shadow-lg shrink-0 cursor-pointer"
+          >
             <IconSearch size={24} stroke={3} />
           </button>
         </div>
@@ -183,3 +205,4 @@ const Hero = () => {
 };
 
 export default Hero;
+

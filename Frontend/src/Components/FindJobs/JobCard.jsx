@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Image, Text, Group, Badge, Divider, Button } from '@mantine/core';
 import { IconMapPin, IconBookmark, IconClock, IconBookmarkFilled } from '@tabler/icons-react';
+import { Link } from 'react-router-dom';
 
 const JobCard = ({ job }) => {
     const [expanded, setExpanded] = useState(false);
@@ -75,9 +76,8 @@ const JobCard = ({ job }) => {
                     <Text
                         size="xs"
                         className={`text-mine-shaft-300! leading-relaxed! transition-all! ${!expanded ? 'line-clamp-2!' : ''}`}
-                    >
-                        {job.description}
-                    </Text>
+                        dangerouslySetInnerHTML={{ __html: job.description }}
+                    />
                     <Text
                         size="10px"
                         fw={700}
@@ -105,6 +105,8 @@ const JobCard = ({ job }) => {
             </div>
 
             <Button
+                component={Link}
+                to={`/job-details/${job.id}`}
                 fullWidth
                 variant="outline"
                 color="yellow"
@@ -118,3 +120,4 @@ const JobCard = ({ job }) => {
 };
 
 export default JobCard;
+

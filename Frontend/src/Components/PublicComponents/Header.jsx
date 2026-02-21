@@ -1,44 +1,152 @@
 import React from "react";
-import { IconReportSearch, IconBell, IconSettings } from "@tabler/icons-react";
-import { Avatar, Indicator } from "@mantine/core";
-import { Link } from "react-router-dom";
+import { IconBell, IconSettings } from "@tabler/icons-react";
+import { Avatar, Indicator, Burger, Drawer, Stack, Divider } from "@mantine/core";
+import { Link, useLocation } from "react-router-dom";
+import { useDisclosure } from "@mantine/hooks";
 import NavLinks from "./NavLinks";
+import BrandLogo, { BrandMark, BrandWordmark } from "./BrandLogo";
 
 const Header = () => {
-  return (
-    <nav className="w-full bg-mine-shaft-950 h-18 text-white flex items-center justify-between px-6 lg:px-20 border-b border-mine-shaft-900 z-50">
-      {/* Logo Section - Self-centered vertically */}
-      <Link to="/" className="flex items-center gap-2 text-bright-sun-400 cursor-pointer shrink-0 py-4">
-        <IconReportSearch stroke={2} className="h-10 w-10" />
-        <div className="text-2xl font-bold tracking-tighter hidden sm:block">
-          Be On Board
-        </div>
-      </Link>
+  const [opened, { toggle, close }] = useDisclosure(false);
+  const { pathname } = useLocation();
 
-      {/* Center NavLinks - No padding here so links can reach the top-0 border */}
-      <div className="hidden md:flex items-center h-full">
+  const links = [
+    { name: "Find Jobs", url: "/find-jobs" },
+    { name: "Find Talents", url: "/find-talents" },
+    { name: "Post Jobs", url: "/post-jobs" },
+    { name: "About Us", url: "/about-us" },
+  ];
+
+  return (
+    <nav className="w-full h-18 text-white flex items-center justify-between px-4 sm:px-6 lg:px-12 border-b border-mine-shaft-900 z-50 sticky top-0 backdrop-blur-md bg-mine-shaft-950/85">
+
+      {/* ── Left: Brand Logo (Flex-1 to help centering center section) ── */}
+      <div className="flex-1 flex justify-start items-center py-2">
+        <BrandLogo compact={true} />
+      </div>
+
+      {/* ── Center: Desktop Navigation (Absolute center on desktop) ── */}
+      <div className="hidden md:flex items-center justify-center h-full">
         <NavLinks />
       </div>
 
-      {/* Profile & Icons Section - Self-centered vertically */}
-      <div className="flex items-center gap-3 lg:gap-6 py-4">
-        <div className="flex items-center gap-3 bg-mine-shaft-900/50 py-2 px-4 rounded-full border border-mine-shaft-800 hover:bg-mine-shaft-800 transition-all cursor-pointer">
-          <Avatar src="avatar.png" alt="Profile" size="sm" radius="xl" />
-          <div className="text-sm font-semibold hidden lg:block">Profile</div>
+      {/* ── Right: Profile & Actions (Flex-1 to help centering center section) ── */}
+      <div className="flex-1 flex items-center justify-end gap-2 lg:gap-4 py-3">
+
+        {/* Profile pill — desktop */}
+        <div className="hidden sm:flex items-center gap-2 bg-mine-shaft-900/60 py-1.5 px-3 rounded-full border border-mine-shaft-800 hover:border-bright-sun-400/40 hover:bg-mine-shaft-800 transition-all cursor-pointer group">
+          <Avatar
+            src="avatar.png"
+            alt="Profile"
+            size="sm"
+            radius="xl"
+            className="border border-mine-shaft-700 group-hover:border-bright-sun-400/50 transition-all"
+          />
+          <div className="flex flex-col leading-none">
+            <span className="text-[10px] font-black text-white uppercase tracking-widest leading-none mb-0.5">Profile</span>
+            <span className="text-[9px] text-mine-shaft-500 font-bold truncate max-w-[90px]">Avijit Bera</span>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2 lg:gap-3">
-          <div className="bg-mine-shaft-900 p-2.5 rounded-full text-gray-400 hover:text-bright-sun-400 cursor-pointer transition-all">
-            <IconSettings stroke={1.5} size={22} />
+        {/* Icon cluster */}
+        <div className="flex items-center gap-1.5">
+          <div className="hidden xs:flex items-center justify-center bg-mine-shaft-900 hover:bg-mine-shaft-800 p-2 rounded-xl text-mine-shaft-400 hover:text-bright-sun-400 cursor-pointer transition-all border border-mine-shaft-800 hover:border-bright-sun-400/30">
+            <IconSettings stroke={1.5} size={18} />
           </div>
-          <div className="bg-mine-shaft-900 p-2.5 rounded-full text-gray-400 hover:text-bright-sun-400 cursor-pointer transition-all">
-            <Indicator color="red" offset={5} size={8} processing>
-              <IconBell stroke={1.5} size={22} />
+          <div className="flex items-center justify-center bg-mine-shaft-900 hover:bg-mine-shaft-800 p-2 rounded-xl text-mine-shaft-400 hover:text-bright-sun-400 cursor-pointer transition-all border border-mine-shaft-800 hover:border-bright-sun-400/30">
+            <Indicator color="red" offset={3} size={7} processing>
+              <IconBell stroke={1.5} size={18} />
             </Indicator>
           </div>
         </div>
+
+        {/* Mobile burger */}
+        <Burger
+          opened={opened}
+          onClick={toggle}
+          className="md:hidden ml-2"
+          size="sm"
+          color="white"
+        />
       </div>
+
+      {/* ── Mobile Drawer ── */}
+      <Drawer
+        opened={opened}
+        onClose={close}
+        size="80%"
+        padding="xl"
+        position="right"
+        title={
+          <div className="flex items-center gap-3">
+            <BrandMark size={36} />
+            <BrandWordmark size="small" />
+          </div>
+        }
+        styles={{
+          header: {
+            backgroundColor: '#080808',
+            borderBottom: '1px solid #1c1c1c',
+            padding: '20px 24px',
+          },
+          content: {
+            backgroundColor: '#080808',
+            backgroundImage:
+              'radial-gradient(ellipse at top right, rgba(250,230,45,0.04) 0%, transparent 60%)',
+          },
+          close: { color: '#6b7280' },
+        }}
+      >
+        <Stack gap={0} mt="md">
+          {links.map((link, idx) => (
+            <Link
+              key={link.url}
+              to={link.url}
+              onClick={close}
+              className={`flex items-center gap-4 px-4 py-4 rounded-2xl transition-all font-black uppercase tracking-wider text-sm ${pathname === link.url
+                ? 'text-bright-sun-400 bg-bright-sun-400/8'
+                : 'text-mine-shaft-300 hover:text-bright-sun-400 hover:bg-mine-shaft-900/60'
+                }`}
+            >
+              {/* Active indicator dot */}
+              <span
+                className={`w-1.5 h-1.5 rounded-full shrink-0 transition-all ${pathname === link.url ? 'bg-bright-sun-400 shadow-[0_0_6px_rgba(250,230,45,0.8)]' : 'bg-mine-shaft-700'
+                  }`}
+              />
+              {link.name}
+              {pathname === link.url && (
+                <span className="ml-auto text-[9px] font-black bg-bright-sun-400/15 text-bright-sun-400 px-2 py-0.5 rounded-full tracking-widest uppercase">
+                  Active
+                </span>
+              )}
+            </Link>
+          ))}
+
+          <Divider color="dark" my="xl" />
+
+          {/* User profile row */}
+          <div className="flex items-center gap-4 bg-mine-shaft-900/30 py-4 px-5 rounded-2xl border border-mine-shaft-800/60">
+            <Avatar src="avatar.png" alt="Profile" size="md" radius="xl" />
+            <div className="flex flex-col">
+              <span className="text-white font-black text-sm tracking-tight">Avijit Bera</span>
+              <span className="text-[11px] text-mine-shaft-500 font-bold">avijit@example.com</span>
+            </div>
+            <div className="ml-auto text-[9px] font-black bg-bright-sun-400 text-mine-shaft-950 px-2.5 py-1 rounded-full tracking-widest uppercase">
+              Pro
+            </div>
+          </div>
+
+          {/* Brand trademark stamp at bottom */}
+          <div className="mt-8 flex items-center justify-center gap-2 opacity-30">
+            <BrandMark size={20} />
+            <span className="text-[9px] font-black text-mine-shaft-500 uppercase tracking-[0.3em]">
+              Be On Board ™
+            </span>
+          </div>
+        </Stack>
+      </Drawer>
     </nav>
   );
 };
+
 export default Header;

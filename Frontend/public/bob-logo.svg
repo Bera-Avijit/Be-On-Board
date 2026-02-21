@@ -1,0 +1,23 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="mainLogoGrad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#FAE62D" />
+            <stop offset="100%" stopColor="#EAB308" />
+        </linearGradient>
+    </defs>
+    <rect width="100" height="100" rx="20" fill="url(#mainLogoGrad)" />
+    
+    {/* Micro tech details */}
+    <circle cx="20" cy="20" r="3" fill="#0D0D0D" fillOpacity="0.1" />
+    <path d="M75 15V35L85 45" stroke="#0D0D0D" strokeOpacity="0.1" strokeWidth="2" fill="none" />
+    
+    {/* Bold B shape */}
+    <path d="M32 25H55C65 25 72 32 72 42C72 52 65 59 55 59H32V25Z" fill="#0D0D0D" />
+    <path d="M32 50H58C68 50 75 57 75 67C75 77 68 84 58 84H32V50Z" fill="#0D0D0D" />
+    
+    {/* Arrow */}
+    <path d="M48 42L55 35L62 42" stroke="#FAE62D" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
+    
+    {/* Side data indicator */}
+    <rect x="82" y="70" width="4" height="12" rx="1" fill="#0D0D0D" fillOpacity="0.4" />
+</svg>
