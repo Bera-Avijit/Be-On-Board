@@ -17,15 +17,25 @@ const FindJobs = () => {
 
     // Handle incoming search criteria from Hero section
     useEffect(() => {
-        if (location.state?.searchCriteria) {
-            const { jobTitle, jobType } = location.state.searchCriteria;
+        const storedCriteria = sessionStorage.getItem('searchCriteria');
+        if (storedCriteria) {
+            const { jobTitle, jobType } = JSON.parse(storedCriteria);
             setFilters(prev => ({
                 ...prev,
                 "Job Role": jobTitle ? [jobTitle] : [],
                 "Job Type": jobType || null
             }));
 
-            // Clear state after applying to avoid re-applying on refresh
+            // Clear sessionStorage after applying
+            sessionStorage.removeItem('searchCriteria');
+        } else if (location.state?.searchCriteria) {
+            // Fallback for SPA transitions if they still occur
+            const { jobTitle, jobType } = location.state.searchCriteria;
+            setFilters(prev => ({
+                ...prev,
+                "Job Role": jobTitle ? [jobTitle] : [],
+                "Job Type": jobType || null
+            }));
             window.history.replaceState({}, document.title);
         }
     }, [location.state]);

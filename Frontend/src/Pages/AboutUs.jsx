@@ -1,7 +1,5 @@
-import React from 'react';
-import { Text, Container, Title, Group, Avatar, SimpleGrid, Card, Button } from '@mantine/core';
+import { Text, Container, Title, Group, Avatar, SimpleGrid, Card, Button, Badge } from '@mantine/core';
 import { IconRocket, IconTarget, IconUsers, IconHeart } from '@tabler/icons-react';
-import { Link } from 'react-router-dom';
 
 const AboutUs = () => {
     return (
@@ -62,19 +60,13 @@ const AboutUs = () => {
                     <Title order={2} className="text-mine-shaft-950 font-black text-4xl mb-6 tracking-tight uppercase">Ready to start your journey?</Title>
                     <Text className="text-mine-shaft-900 font-bold max-w-lg mx-auto mb-10">Join thousands of professionals who have found their dream roles through Be On Board.</Text>
                     <Group justify="center">
-                        <Button component={Link} to="/find-jobs" size="xl" radius="xl" className="bg-mine-shaft-950! text-white! hover:bg-mine-shaft-800! px-10! font-black uppercase tracking-tighter">Find a Job</Button>
-                        <Button component={Link} to="/post-jobs" size="xl" radius="xl" variant="outline" className="border-mine-shaft-950! text-mine-shaft-950! hover:bg-mine-shaft-950/10! px-10! font-black uppercase tracking-tighter">Post a Job</Button>
+                        <Button component="a" href="/find-jobs" size="xl" radius="xl" className="bg-mine-shaft-950! text-white! hover:bg-mine-shaft-800! px-10! font-black uppercase tracking-tighter">Find a Job</Button>
+                        <Button component="a" href="/post-jobs" size="xl" radius="xl" variant="outline" className="border-mine-shaft-950! text-mine-shaft-950! hover:bg-mine-shaft-950/10! px-10! font-black uppercase tracking-tighter">Post a Job</Button>
                     </Group>
                 </div>
             </Container>
         </div>
     );
 };
-
-const Badge = ({ children, className }) => (
-    <div className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${className}`}>
-        {children}
-    </div>
-);
 
 export default AboutUs;

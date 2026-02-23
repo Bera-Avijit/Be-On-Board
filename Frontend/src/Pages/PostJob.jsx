@@ -163,7 +163,7 @@ const PostJob = () => {
         };
         const existingJobs = JSON.parse(localStorage.getItem('publishedJobs') || '[]');
         localStorage.setItem('publishedJobs', JSON.stringify([newJob, ...existingJobs]));
-        navigate('/find-jobs');
+        window.location.href = '/find-jobs';
     };
 
     const addSkill = (skill) => {
@@ -204,7 +204,7 @@ const PostJob = () => {
                 {/* Header */}
                 <div className="flex items-center gap-6 mb-12">
                     <button
-                        onClick={() => navigate(-1)}
+                        onClick={() => window.location.href = '/'}
                         className="p-3 bg-mine-shaft-900/50 rounded-2xl hover:bg-mine-shaft-800 transition-all border border-mine-shaft-800"
                     >
                         <IconChevronLeft size={24} className="text-mine-shaft-200" />

@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 /**
  * 🎨 "Funky & Busy" BrandMark
@@ -95,15 +94,15 @@ const BrandWordmark = ({ size = "default" }) => {
 
 // Combined Component - Specifically tuned for Nav Header
 const BrandLogo = ({ compact = false }) => (
-    <Link
-        to="/"
+    <a
+        href="/"
         className="flex items-center gap-3 cursor-pointer shrink-0 group no-underline hover:no-underline"
     >
         <BrandMark size={compact ? 40 : 48} />
         <div className="flex flex-col">
             <BrandWordmark size={compact ? "small" : "default"} />
         </div>
-    </Link>
+    </a>
 );
 
 export { BrandMark, BrandWordmark, BrandLogo };

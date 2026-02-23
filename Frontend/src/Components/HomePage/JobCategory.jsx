@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
-import { useNavigate } from 'react-router-dom';
+
 
 const jobCategories = [
     {
@@ -83,7 +83,6 @@ const jobCategories = [
 ];
 
 const JobCategory = () => {
-    const navigate = useNavigate();
     const scrollRef = useRef(null);
     const [showLeftArrow, setShowLeftArrow] = useState(false);
     const [showRightArrow, setShowRightArrow] = useState(true);
@@ -119,13 +118,12 @@ const JobCategory = () => {
     };
 
     const handleCategoryClick = (categoryName) => {
-        navigate("/find-jobs", {
-            state: {
-                searchCriteria: {
-                    jobTitle: categoryName
-                }
-            }
-        });
+        const searchCriteria = {
+            jobTitle: categoryName,
+            jobType: null
+        };
+        sessionStorage.setItem('searchCriteria', JSON.stringify(searchCriteria));
+        window.location.href = "/find-jobs";
     };
 
     return (

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const links = [
   { name: "Find Jobs", url: "/find-jobs" },
@@ -17,9 +17,9 @@ const NavLinks = () => {
         const isActive = pathname === link.url;
 
         return (
-          <Link
+          <a
             key={index}
-            to={link.url}
+            href={link.url}
             className={`
               relative h-full flex items-center transition-all duration-300 ease-in-out font-medium
               /* Text Color */
@@ -46,7 +46,7 @@ const NavLinks = () => {
             `}
           >
             {link.name}
-          </Link>
+          </a>
         );
       })}
     </div>

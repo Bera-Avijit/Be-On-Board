@@ -1,7 +1,7 @@
 import React from "react";
 import { IconBell, IconSettings } from "@tabler/icons-react";
 import { Avatar, Indicator, Burger, Drawer, Stack, Divider } from "@mantine/core";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useDisclosure } from "@mantine/hooks";
 import NavLinks from "./NavLinks";
 import BrandLogo, { BrandMark, BrandWordmark } from "./BrandLogo";
@@ -18,7 +18,7 @@ const Header = () => {
   ];
 
   return (
-    <nav className="w-full h-18 text-white flex items-center justify-between px-4 sm:px-6 lg:px-12 border-b border-mine-shaft-900 z-50 sticky top-0 backdrop-blur-md bg-mine-shaft-950/85">
+    <nav className="fixed top-0 left-0 w-full h-18 text-white flex items-center justify-between px-4 sm:px-6 lg:px-12 border-b border-mine-shaft-800 z-100 backdrop-blur-xl bg-mine-shaft-950/60 transition-all duration-300">
 
       {/* ── Left: Brand Logo (Flex-1 to help centering center section) ── */}
       <div className="flex-1 flex justify-start items-center py-2">
@@ -36,7 +36,7 @@ const Header = () => {
         {/* Profile pill — desktop */}
         <div className="hidden sm:flex items-center gap-2 bg-mine-shaft-900/60 py-1.5 px-3 rounded-full border border-mine-shaft-800 hover:border-bright-sun-400/40 hover:bg-mine-shaft-800 transition-all cursor-pointer group">
           <Avatar
-            src="avatar.png"
+            src="/avatar.png"
             alt="Profile"
             size="sm"
             radius="xl"
@@ -99,10 +99,9 @@ const Header = () => {
       >
         <Stack gap={0} mt="md">
           {links.map((link, idx) => (
-            <Link
+            <a
               key={link.url}
-              to={link.url}
-              onClick={close}
+              href={link.url}
               className={`flex items-center gap-4 px-4 py-4 rounded-2xl transition-all font-black uppercase tracking-wider text-sm ${pathname === link.url
                 ? 'text-bright-sun-400 bg-bright-sun-400/8'
                 : 'text-mine-shaft-300 hover:text-bright-sun-400 hover:bg-mine-shaft-900/60'
@@ -119,14 +118,14 @@ const Header = () => {
                   Active
                 </span>
               )}
-            </Link>
+            </a>
           ))}
 
           <Divider color="dark" my="xl" />
 
           {/* User profile row */}
           <div className="flex items-center gap-4 bg-mine-shaft-900/30 py-4 px-5 rounded-2xl border border-mine-shaft-800/60">
-            <Avatar src="avatar.png" alt="Profile" size="md" radius="xl" />
+            <Avatar src="/avatar.png" alt="Profile" size="md" radius="xl" />
             <div className="flex flex-col">
               <span className="text-white font-black text-sm tracking-tight">Avijit Bera</span>
               <span className="text-[11px] text-mine-shaft-500 font-bold">avijit@example.com</span>

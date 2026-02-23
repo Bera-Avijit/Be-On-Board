@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Avatar, Text, Group, Badge, Divider, Button } from '@mantine/core';
 import { IconMapPin, IconHeart, IconHeartFilled } from '@tabler/icons-react';
-import { Link } from 'react-router-dom';
+
 
 const TalentCard = ({ talent }) => {
     const [bookmarked, setBookmarked] = useState(false);
@@ -97,8 +97,8 @@ const TalentCard = ({ talent }) => {
 
             <Group grow gap="sm">
                 <Button
-                    component={Link}
-                    to={`/talent-profile/${talent.id}`}
+                    component="a"
+                    href={`/talent-profile/${talent.id}`}
                     variant="outline"
                     color="yellow"
                     radius="md"

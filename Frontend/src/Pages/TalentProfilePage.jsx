@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, Button } from '@mantine/core';
 import { IconArrowLeft, IconAdjustmentsHorizontal, IconX } from '@tabler/icons-react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import TalentHeader from '../Components/TalentProfile/TalentHeader';
 import { TalentAbout, TalentSkills } from '../Components/TalentProfile/TalentSections';
 import TalentExperience from '../Components/TalentProfile/TalentExperience';
@@ -24,13 +24,13 @@ const TalentProfilePage = () => {
                     {/* Left Column: Navigation and Main Profile */}
                     <div className="min-w-0 transition-all duration-700 ease-in-out">
                         <div className="flex justify-between items-center transition-all duration-700 mb-10 h-12">
-                            <Link
-                                to="/find-talents"
-                                className="inline-flex items-center gap-2 text-mine-shaft-300 hover:text-bright-sun-400 transition-all group px-4 py-2 hover:bg-mine-shaft-900 rounded-xl"
+                            <a
+                                href="/find-talents"
+                                className="inline-flex items-center gap-2 text-mine-shaft-300 hover:text-bright-sun-400 transition-all group px-4 py-2 hover:bg-mine-shaft-900 rounded-xl no-underline"
                             >
                                 <IconArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
                                 <Text fw={800} size="sm" className="tracking-tight">Back to Talent Feed</Text>
-                            </Link>
+                            </a>
 
                             {!showRecommended && (
                                 <Button

@@ -12,15 +12,28 @@ const Footer = () => {
     const footerLinks = [
         {
             title: "Product",
-            links: ["Find Job", "Find Company", "Find Employee"]
+            links: [
+                { name: "Find Job", url: "/find-jobs" },
+                { name: "Post Job", url: "/post-jobs" },
+                { name: "Find Talent", url: "/find-talents" }
+            ]
         },
         {
             title: "Category",
-            links: ["About Us", "Contact Us", "Privacy Policy", "Terms and Conditions"]
+            links: [
+                { name: "About Us", url: "/about-us" },
+                { name: "Contact Us", url: "/about-us" },
+                { name: "Privacy Policy", url: "/about-us" },
+                { name: "Terms & Conditions", url: "/about-us" }
+            ]
         },
         {
             title: "Support",
-            links: ["Help & Support", "Feedback", "FAQs"]
+            links: [
+                { name: "Help & Support", url: "/about-us" },
+                { name: "Feedback", url: "/about-us" },
+                { name: "FAQs", url: "/about-us" }
+            ]
         }
     ];
 
@@ -65,11 +78,11 @@ const Footer = () => {
                                 {section.links.map((link, linkIndex) => (
                                     <li key={linkIndex}>
                                         <a
-                                            href="#"
+                                            href={link.url}
                                             className="hover:text-bright-sun-400 transition-colors duration-200 flex items-center group"
                                         >
                                             <span className="w-1.5 h-1.5 rounded-full bg-bright-sun-400 opacity-0 group-hover:opacity-100 transition-all duration-200 -ml-3 mr-1.5"></span>
-                                            {link}
+                                            {link.name}
                                         </a>
                                     </li>
                                 ))}
