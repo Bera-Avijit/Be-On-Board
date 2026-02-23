@@ -14,7 +14,7 @@ const Layout = () => {
     return (
         <div className="flex flex-col min-h-screen w-full bg-mine-shaft-950 font-['Poppins'] text-mine-shaft-100">
             <Header />
-            <main className="flex-1 w-full">
+            <main className="flex-1 w-full pt-20">
                 <Outlet />
             </main>
             <Footer />

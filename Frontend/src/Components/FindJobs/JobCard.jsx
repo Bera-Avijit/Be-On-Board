@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Image, Text, Group, Badge, Divider, Button } from '@mantine/core';
 import { IconMapPin, IconBookmark, IconClock, IconBookmarkFilled } from '@tabler/icons-react';
-import { Link } from 'react-router-dom';
+
 
 const JobCard = ({ job }) => {
     const [expanded, setExpanded] = useState(false);
@@ -105,8 +105,8 @@ const JobCard = ({ job }) => {
             </div>
 
             <Button
-                component={Link}
-                to={`/job-details/${job.id}`}
+                component="a"
+                href={`/job-details/${job.id}`}
                 fullWidth
                 variant="outline"
                 color="yellow"

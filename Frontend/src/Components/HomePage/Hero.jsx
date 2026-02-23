@@ -1,22 +1,18 @@
 import { Avatar, Divider, Select } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
 const Hero = () => {
-  const navigate = useNavigate();
   const [jobTitle, setJobTitle] = useState("");
   const [jobType, setJobType] = useState("Full Time");
 
   const handleSearch = () => {
-    navigate("/find-jobs", {
-      state: {
-        searchCriteria: {
-          jobTitle: jobTitle,
-          jobType: jobType
-        }
-      }
-    });
+    // Store criteria in sessionStorage temporarily since standard reloads don't support react-router state
+    const searchCriteria = {
+      jobTitle: jobTitle,
+      jobType: jobType
+    };
+    sessionStorage.setItem('searchCriteria', JSON.stringify(searchCriteria));
+    window.location.href = "/find-jobs";
   };
 
   return (

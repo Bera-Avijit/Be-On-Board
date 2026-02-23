@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Text, Button, Group, Badge, Divider, List, Avatar } from '@mantine/core';
 import { IconMapPin, IconBriefcase, IconClock, IconCurrencyDollar, IconArrowLeft, IconBookmark, IconShare, IconSquareCheck } from '@tabler/icons-react';
 import { JOBS_DATA } from '../Data/JobsData';
 
 const JobDetailsPage = () => {
     const { id } = useParams();
-    const navigate = useNavigate();
     const [job, setJob] = useState(null);
 
     useEffect(() => {
@@ -14,9 +13,6 @@ const JobDetailsPage = () => {
         const allJobs = [...publishedJobs, ...JOBS_DATA];
         const foundJob = allJobs.find(j => String(j.id) === String(id));
         setJob(foundJob);
-
-        // Scroll to top on mount
-        window.scrollTo(0, 0);
     }, [id]);
 
     if (!job) {
@@ -24,7 +20,7 @@ const JobDetailsPage = () => {
             <div className="min-h-screen bg-mine-shaft-950 flex flex-col items-center justify-center p-6 text-center">
                 <Text size="xl" fw={900} color="white">Job listing not found</Text>
                 <Button
-                    onClick={() => navigate('/find-jobs')}
+                    onClick={() => window.location.href = '/find-jobs'}
                     variant="light"
                     color="yellow"
                     mt="md"
@@ -41,13 +37,13 @@ const JobDetailsPage = () => {
             {/* Header / Hero Section */}
             <div className="bg-mine-shaft-900/30 border-b border-mine-shaft-800 pt-12 pb-16">
                 <div className="max-w-6xl mx-auto px-6">
-                    <Link
-                        to="/find-jobs"
+                    <a
+                        href="/find-jobs"
                         className="inline-flex items-center gap-2 text-mine-shaft-400 hover:text-bright-sun-400 mb-8 transition-colors group font-bold text-sm"
                     >
                         <IconArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
                         Back to Job Postings
-                    </Link>
+                    </a>
 
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
                         <div className="flex gap-6 items-center">

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Avatar, Text, Group, ActionIcon } from '@mantine/core';
 import { IconHeart, IconHeartFilled } from '@tabler/icons-react';
-import { Link } from 'react-router-dom';
+
 
 const RecommendedTalentCard = ({ talent }) => {
     const [bookmarked, setBookmarked] = useState(false);
 
     return (
         <div className="flex items-center justify-between p-3 rounded-xl bg-mine-shaft-900/50 border border-mine-shaft-800 hover:border-bright-sun-400/30 transition-all group">
-            <Link to={`/talent-profile/${talent.id}`} className="flex items-center gap-3 flex-1 min-w-0">
+            <a href={`/talent-profile/${talent.id}`} className="flex items-center gap-3 flex-1 min-w-0 no-underline">
                 <Avatar
                     src={talent.image}
                     alt={talent.name}
@@ -24,7 +24,7 @@ const RecommendedTalentCard = ({ talent }) => {
                         {talent.role} • {talent.company}
                     </Text>
                 </div>
-            </Link>
+            </a>
 
             <ActionIcon
                 variant="subtle"
