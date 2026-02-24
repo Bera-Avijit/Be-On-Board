@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Text, Button, Group, Badge, Divider, List, Avatar } from '@mantine/core';
 import { IconMapPin, IconBriefcase, IconClock, IconCurrencyDollar, IconArrowLeft, IconBookmark, IconShare, IconSquareCheck } from '@tabler/icons-react';
 import { JOBS_DATA } from '../Data/JobsData';
@@ -75,6 +75,8 @@ const JobDetailsPage = () => {
                                 <IconBookmark size={20} />
                             </Button>
                             <Button
+                                component={Link}
+                                to={`/apply-job/${job.id}`}
                                 color="yellow"
                                 size="lg"
                                 radius="xl"
@@ -198,6 +200,8 @@ const JobDetailsPage = () => {
 
                             <div className="flex flex-col gap-4">
                                 <Button
+                                    component={Link}
+                                    to={`/apply-job/${job.id}`}
                                     fullWidth
                                     size="md"
                                     radius="xl"
