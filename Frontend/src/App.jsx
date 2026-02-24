@@ -9,6 +9,7 @@ import TalentProfilePage from "./Pages/TalentProfilePage";
 import PostJob from "./Pages/PostJob";
 import JobDetailsPage from "./Pages/JobDetailsPage";
 import AboutUs from "./Pages/AboutUs";
+import ApplyJobPage from "./Pages/ApplyJobPage";
 
 const Layout = () => {
     return (
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
             {
                 path: "job-details/:id",
                 element: <JobDetailsPage />,
+            },
+            {
+                path: "apply-job/:id",
+                element: <ApplyJobPage />,
             },
             {
                 path: "about-us",
