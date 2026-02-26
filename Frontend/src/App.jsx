@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Outlet, ScrollRestoration } from "react-router-dom";
 import "./App.css";
 import HomePage from "./Pages/HomePage";
 import FindJobs from "./Pages/FindJobs";
@@ -10,10 +10,16 @@ import PostJob from "./Pages/PostJob";
 import JobDetailsPage from "./Pages/JobDetailsPage";
 import AboutUs from "./Pages/AboutUs";
 import ApplyJobPage from "./Pages/ApplyJobPage";
+import RecruiterDashboard from "./Pages/RecruiterDashboard";
+import CandidateDashboard from "./Pages/CandidateDashboard";
+import AdminTracking from "./Pages/AdminTracking";
+
+import ProtectedRoute from "./Components/Protected/ProtectedRoute";
 
 const Layout = () => {
     return (
         <div className="flex flex-col min-h-screen w-full bg-mine-shaft-950 font-['Poppins'] text-mine-shaft-100">
+            <ScrollRestoration />
             <Header />
             <main className="flex-1 w-full pt-20">
                 <Outlet />
@@ -38,15 +44,51 @@ const router = createBrowserRouter([
             },
             {
                 path: "find-talents",
-                element: <FindTalents />,
+                element: (
+                    <ProtectedRoute allowedRoles={["RECRUITER", "ADMIN"]}>
+                        <FindTalents />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "talent-profile/:id",
-                element: <TalentProfilePage />,
+                element: (
+                    <ProtectedRoute allowedRoles={["RECRUITER", "ADMIN"]}>
+                        <TalentProfilePage />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "post-jobs",
-                element: <PostJob />,
+                element: (
+                    <ProtectedRoute allowedRoles={["RECRUITER"]}>
+                        <PostJob />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: "recruiter-dashboard",
+                element: (
+                    <ProtectedRoute allowedRoles={["RECRUITER"]}>
+                        <RecruiterDashboard />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: "applications",
+                element: (
+                    <ProtectedRoute allowedRoles={["CANDIDATE"]}>
+                        <CandidateDashboard />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: "admin/tracking",
+                element: (
+                    <ProtectedRoute allowedRoles={["ADMIN"]}>
+                        <AdminTracking />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "job-details/:id",
@@ -54,7 +96,11 @@ const router = createBrowserRouter([
             },
             {
                 path: "apply-job/:id",
-                element: <ApplyJobPage />,
+                element: (
+                    <ProtectedRoute allowedRoles={["CANDIDATE"]}>
+                        <ApplyJobPage />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "about-us",
