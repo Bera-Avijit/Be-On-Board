@@ -1,15 +1,9 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
-
-const links = [
-  { name: "Find Jobs", url: "/find-jobs" },
-  { name: "Find Talents", url: "/find-talents" },
-  { name: "Post Jobs", url: "/post-jobs" },
-  { name: "About Us", url: "/about-us" },
-];
+import { Link, useLocation } from "react-router-dom";
+import { User, getNavLinks } from "../../Data/User";
 
 const NavLinks = () => {
   const { pathname } = useLocation();
+  const links = getNavLinks(User.role);
 
   return (
     <div className="flex gap-8 items-center h-full">
@@ -17,9 +11,9 @@ const NavLinks = () => {
         const isActive = pathname === link.url;
 
         return (
-          <a
+          <Link
             key={index}
-            href={link.url}
+            to={link.url}
             className={`
               relative h-full flex items-center transition-all duration-300 ease-in-out font-medium
               /* Text Color */
@@ -46,7 +40,7 @@ const NavLinks = () => {
             `}
           >
             {link.name}
-          </a>
+          </Link>
         );
       })}
     </div>

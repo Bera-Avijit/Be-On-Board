@@ -26,6 +26,7 @@ import {
     IconX,
     IconFileText
 } from '@tabler/icons-react';
+import { addApplication } from '../../Data/ApplicationData';
 
 const ApplicationForm = ({ jobTitle, company }) => {
     const [submitted, setSubmitted] = useState(false);
@@ -53,22 +54,26 @@ const ApplicationForm = ({ jobTitle, company }) => {
     });
 
     const handleSubmit = (values) => {
-        console.log('Form Submitted:', values);
-        // Simulate API call
-        setTimeout(() => {
-            setSubmitted(true);
-        }, 1000);
+        // Save to local storage via ApplicationData.js
+        addApplication({
+            ...values,
+            jobTitle,
+            company,
+            resume: values.resume ? values.resume.name : null // Store filename for mock
+        });
+
+        setSubmitted(true);
     };
 
     if (submitted) {
         return (
-            <Box className="bg-mine-shaft-900/40! border! border-bright-sun-400/30! p-12 rounded-[2.5rem] text-center max-w-2xl mx-auto shadow-2xl backdrop-blur-md">
-                <div className="w-20 h-20 bg-bright-sun-400 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-bright-sun-400/20">
-                    <IconCheck size={40} className="text-mine-shaft-950" />
+            <Box className="bg-mine-shaft-900/40! border! border-bright-sun-400/30! p-12! rounded-[2.5rem]! text-center! max-w-2xl! mx-auto! shadow-2xl! backdrop-blur-md!">
+                <div className="w-20! h-20! bg-bright-sun-400! rounded-full! flex! items-center! justify-center! mx-auto! mb-6! shadow-lg! shadow-bright-sun-400/20!">
+                    <IconCheck size={40} className="text-mine-shaft-950!" />
                 </div>
-                <Text size="2xl" fw={900} className="text-white! mb-2 uppercase tracking-tighter">Application Submitted!</Text>
-                <Text size="sm" className="text-mine-shaft-300! font-medium mb-8">
-                    Your application for <span className="text-bright-sun-400">{jobTitle}</span> at <span className="text-bright-sun-400">{company}</span> has been sent successfully.
+                <Text size="2xl" fw={900} className="text-white! mb-2! uppercase! tracking-tighter!">Application Submitted!</Text>
+                <Text size="sm" className="text-mine-shaft-300! font-medium! mb-8!">
+                    Your application for <span className="text-bright-sun-400!">{jobTitle}</span> at <span className="text-bright-sun-400!">{company}</span> has been sent successfully.
                 </Text>
                 <Button
                     variant="light"
@@ -76,7 +81,7 @@ const ApplicationForm = ({ jobTitle, company }) => {
                     radius="xl"
                     size="lg"
                     onClick={() => window.location.href = '/find-jobs'}
-                    className="bg-bright-sun-400/10! text-bright-sun-400! hover:bg-bright-sun-400/20! border! border-bright-sun-400/20! font-black px-10"
+                    className="bg-bright-sun-400/10! text-bright-sun-400! hover:bg-bright-sun-400/20! border! border-bright-sun-400/20! font-black! px-10!"
                 >
                     Back to Jobs
                 </Button>
@@ -85,15 +90,15 @@ const ApplicationForm = ({ jobTitle, company }) => {
     }
 
     return (
-        <Box className="bg-mine-shaft-900/20! border! border-mine-shaft-800! rounded-[2.5rem] p-8 lg:p-10 shadow-2xl backdrop-blur-sm">
-            <div className="flex gap-4 mb-10">
-                <div className="w-1.5 bg-bright-sun-400! rounded-full! self-stretch"></div>
+        <Box className="bg-mine-shaft-900/20! border! border-mine-shaft-800! rounded-[2.5rem]! p-8! lg:p-10! shadow-2xl! backdrop-blur-sm!">
+            <div className="flex! gap-4! mb-10!">
+                <div className="w-1.5! bg-bright-sun-400! rounded-full! self-stretch!"></div>
                 <div>
-                    <Text size="3xl" fw={800} className="text-white! uppercase mb-1 flex items-center gap-2">
-                        Apply for <span className="text-bright-sun-400 tracking-wide">{jobTitle}</span>
+                    <Text size="3xl" fw={800} className="text-white! uppercase! mb-1! flex! items-center! gap-2!">
+                        Apply for <span className="text-bright-sun-400! tracking-wide!"> {jobTitle}</span>
                     </Text>
-                    <Text size="xs" className="text-mine-shaft-400! font-bold uppercase tracking-[0.2em]">
-                        at <span className="text-bright-sun-400 ml-1">{company}</span>
+                    <Text size="xs" className="text-mine-shaft-400! font-bold! uppercase! tracking-[0.2em]!">
+                        at <span className="text-bright-sun-400! ml-1!">{company}</span>
                     </Text>
                 </div>
             </div>

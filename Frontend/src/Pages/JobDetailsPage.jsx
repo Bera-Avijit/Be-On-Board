@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Text, Button, Group, Badge, Divider, List, Avatar } from '@mantine/core';
 import { IconMapPin, IconBriefcase, IconClock, IconCurrencyDollar, IconArrowLeft, IconBookmark, IconShare, IconSquareCheck } from '@tabler/icons-react';
 import { JOBS_DATA } from '../Data/JobsData';
+import { User } from '../Data/User';
 
 const JobDetailsPage = () => {
     const { id } = useParams();
@@ -37,13 +38,13 @@ const JobDetailsPage = () => {
             {/* Header / Hero Section */}
             <div className="bg-mine-shaft-900/30 border-b border-mine-shaft-800 pt-12 pb-16">
                 <div className="max-w-6xl mx-auto px-6">
-                    <a
-                        href="/find-jobs"
+                    <Link
+                        to="/find-jobs"
                         className="inline-flex items-center gap-2 text-mine-shaft-400 hover:text-bright-sun-400 mb-8 transition-colors group font-bold text-sm"
                     >
                         <IconArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
                         Back to Job Postings
-                    </a>
+                    </Link>
 
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
                         <div className="flex gap-6 items-center">
@@ -74,16 +75,29 @@ const JobDetailsPage = () => {
                             >
                                 <IconBookmark size={20} />
                             </Button>
-                            <Button
-                                component={Link}
-                                to={`/apply-job/${job.id}`}
-                                color="yellow"
-                                size="lg"
-                                radius="xl"
-                                className="bg-bright-sun-400! text-mine-shaft-950! hover:bg-bright-sun-500! font-black flex-1 md:flex-none"
-                            >
-                                Apply Now
-                            </Button>
+                            {User.role === 'CANDIDATE' ? (
+                                <Button
+                                    component={Link}
+                                    to={`/apply-job/${job.id}`}
+                                    color="yellow"
+                                    size="lg"
+                                    radius="xl"
+                                    className="bg-bright-sun-400! text-mine-shaft-950! hover:bg-bright-sun-500! font-black flex-1 md:flex-none"
+                                >
+                                    Apply Now
+                                </Button>
+                            ) : (
+                                <Button
+                                    disabled
+                                    variant="filled"
+                                    color="gray"
+                                    size="lg"
+                                    radius="xl"
+                                    className="bg-mine-shaft-800! text-mine-shaft-500! font-black flex-1 md:flex-none cursor-not-allowed"
+                                >
+                                    {User.role === 'RECRUITER' ? 'Recruiter View' : 'Apply (Candidate Only)'}
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -199,17 +213,29 @@ const JobDetailsPage = () => {
                             <Divider className="border-mine-shaft-800 my-8" />
 
                             <div className="flex flex-col gap-4">
-                                <Button
-                                    component={Link}
-                                    to={`/apply-job/${job.id}`}
-                                    fullWidth
-                                    size="md"
-                                    radius="xl"
-                                    color="yellow"
-                                    className="bg-bright-sun-400! text-mine-shaft-950! font-black uppercase tracking-tighter"
-                                >
-                                    Apply for this role
-                                </Button>
+                                {User.role === 'CANDIDATE' ? (
+                                    <Button
+                                        component={Link}
+                                        to={`/apply-job/${job.id}`}
+                                        fullWidth
+                                        size="md"
+                                        radius="xl"
+                                        color="yellow"
+                                        className="bg-bright-sun-400! text-mine-shaft-950! font-black uppercase tracking-tighter"
+                                    >
+                                        Apply for this role
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        disabled
+                                        fullWidth
+                                        size="md"
+                                        radius="xl"
+                                        className="bg-mine-shaft-800! text-mine-shaft-500! font-black uppercase tracking-tighter cursor-not-allowed"
+                                    >
+                                        Apply (Candidate Only)
+                                    </Button>
+                                )}
                                 <Button
                                     fullWidth
                                     size="md"
