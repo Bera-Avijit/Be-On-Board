@@ -1,1 +1,27 @@
+# --- FRONTEND ---
 Frontend/node_modules/
+Frontend/.env
+
+# --- BACKEND ---
+Backend/target/
+Backend/.mvn/wrapper/maven-wrapper.jar
+Backend/!**/src/main/**/target/
+Backend/!**/src/test/**/target/
+
+# --- IDE FILES ---
+.idea/
+.vscode/
+*.iws
+*.iml
+*.ipr
+.classpath
+.project
+.settings/
+.factorypath
+
+# --- SECRETS (STRICT PROTECTION) ---
+# We block all secret files no matter where they are
+**/.env
+**/application-secret.properties
+**/secrets.properties
+Backend/src/main/resources/META-INF/secrets.properties
