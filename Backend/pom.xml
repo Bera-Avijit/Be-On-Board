@@ -111,7 +111,6 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
-					<jvmArguments>-Djava.net.preferIPv6Addresses=true</jvmArguments>
 				</configuration>
 			</plugin>
 		</plugins>
