@@ -11,14 +11,17 @@ import TextAlign from '@tiptap/extension-text-align';
 import Highlight from '@tiptap/extension-highlight';
 import "@mantine/tiptap/styles.css";
 
+const LOGODEV_PK = import.meta.env.VITE_LOGODEV_PUBLISHABLE_KEY;
+const LOGODEV_SK = import.meta.env.VITE_LOGODEV_SECRET_KEY;
+
 const TOP_COMPANIES = [
-    { name: "Google", logo: "https://logo.clearbit.com/google.com" },
-    { name: "Microsoft", logo: "https://logo.clearbit.com/microsoft.com" },
-    { name: "Amazon", logo: "https://logo.clearbit.com/amazon.com" },
-    { name: "Apple", logo: "https://logo.clearbit.com/apple.com" },
-    { name: "Meta", logo: "https://logo.clearbit.com/meta.com" },
-    { name: "Netflix", logo: "https://logo.clearbit.com/netflix.com" },
-    { name: "Adobe", logo: "https://logo.clearbit.com/adobe.com" }
+    { name: "Google", logo: `https://img.logo.dev/google.com?token=${LOGODEV_PK}` },
+    { name: "Microsoft", logo: `https://img.logo.dev/microsoft.com?token=${LOGODEV_PK}` },
+    { name: "Amazon", logo: `https://img.logo.dev/amazon.com?token=${LOGODEV_PK}` },
+    { name: "Apple", logo: `https://img.logo.dev/apple.com?token=${LOGODEV_PK}` },
+    { name: "Meta", logo: `https://img.logo.dev/meta.com?token=${LOGODEV_PK}` },
+    { name: "Netflix", logo: `https://img.logo.dev/netflix.com?token=${LOGODEV_PK}` },
+    { name: "Adobe", logo: `https://img.logo.dev/adobe.com?token=${LOGODEV_PK}` }
 ];
 
 const PostJob = () => {
@@ -100,7 +103,7 @@ const PostJob = () => {
         return () => clearTimeout(timer);
     }, [formData.jobTitle, activeDropdown]);
 
-    // Company Autocomplete (Clearbit API)
+    // Company Autocomplete (Logo.dev API)
     useEffect(() => {
         if (activeDropdown !== 'company') return;
 
@@ -112,11 +115,15 @@ const PostJob = () => {
         const timer = setTimeout(async () => {
             setAutocomplete(prev => ({ ...prev, isLoading: { ...prev.isLoading, company: true } }));
             try {
-                const res = await fetch(`https://autocomplete.clearbit.com/v1/companies/suggest?query=${encodeURIComponent(formData.company)}`);
+                const res = await fetch(`https://api.logo.dev/search?q=${encodeURIComponent(formData.company)}`, {
+                    headers: {
+                        'Authorization': `Bearer ${LOGODEV_SK}`
+                    }
+                });
                 const data = await res.json();
                 const apiCompanies = data.map(item => ({
                     name: item.name,
-                    logo: item.logo || (item.domain ? `https://logo.clearbit.com/${item.domain}` : null)
+                    logo: `https://img.logo.dev/${item.domain}?token=${LOGODEV_PK}`
                 }));
                 setAutocomplete(prev => ({
                     ...prev,
@@ -157,7 +164,7 @@ const PostJob = () => {
             id: Date.now(),
             postedDaysAgo: 0,
             applicants: 0,
-            logoUrl: formData.companyLogo || `https://www.google.com/s2/favicons?domain=${formData.company.toLowerCase().replace(/\s/g, '')}.com&sz=128`,
+            logoUrl: formData.companyLogo || `https://img.logo.dev/${formData.company.toLowerCase().replace(/\s/g, '')}.com?token=${LOGODEV_PK}`,
             minSalary: Number(formData.salary),
             maxSalary: Number(formData.salary) + 5
         };
@@ -305,7 +312,7 @@ const PostJob = () => {
                                 {formData.company && (
                                     <div className="w-14 h-14 bg-[#111111] border border-mine-shaft-800 rounded-2xl flex items-center justify-center p-2 shadow-xl animate-in fade-in zoom-in duration-300 relative group overflow-hidden">
                                         <img
-                                            src={formData.companyLogo || `https://logo.clearbit.com/${formData.company.toLowerCase().replace(/\s/g, '')}.com`}
+                                            src={formData.companyLogo || `https://img.logo.dev/${formData.company.toLowerCase().replace(/\s/g, '')}.com?token=${LOGODEV_PK}`}
                                             alt="Logo"
                                             className="w-full h-full object-contain"
                                             onError={(e) => { e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(formData.company)}&background=FA9E0D&color=fff&bold=true`; }}
