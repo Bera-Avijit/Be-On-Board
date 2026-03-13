@@ -5,10 +5,46 @@ import JobCard from './JobCard';
 import { JOBS_DATA } from '../../Data/JobsData';
 
 const Jobs = ({ filters, sortOption, resetFilters }) => {
+    const [backendJobs, setBackendJobs] = React.useState([]);
+    const [isLoading, setIsLoading] = React.useState(true);
+
+    // Fetch jobs from Backend
+    React.useEffect(() => {
+        const fetchJobs = async () => {
+            try {
+                const res = await fetch('http://localhost:8080/api/jobs/all');
+                if (res.ok) {
+                    const data = await res.json();
+                    // Map backend Job entity fields to frontend Card expectations
+                    const mappedJobs = data.map(j => ({
+                        id: j.id,
+                        jobTitle: j.title,
+                        company: j.companyName,
+                        logoUrl: j.companyLogo,
+                        experience: j.experienceLevel,
+                        jobType: j.jobType,
+                        location: j.location,
+                        minSalary: j.salary,
+                        maxSalary: j.salary + 5, // Simple projection
+                        description: j.description,
+                        postedDaysAgo: Math.floor((new Date() - new Date(j.postedAt)) / (1000 * 60 * 60 * 24)),
+                        applicants: 0 // Placeholder as it's not in entity yet
+                    }));
+                    setBackendJobs(mappedJobs);
+                }
+            } catch (err) {
+                console.error("Backend fetch failed, using local only:", err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchJobs();
+    }, []);
+
     // Filter and Sort logic
     const getProcessedJobs = () => {
         const publishedJobs = JSON.parse(localStorage.getItem('publishedJobs') || '[]');
-        let jobs = [...publishedJobs, ...JOBS_DATA];
+        let jobs = [...backendJobs, ...publishedJobs, ...JOBS_DATA];
 
         // 1. Filtering Logic
         if (filters["Job Role"] && filters["Job Role"].length > 0) {
