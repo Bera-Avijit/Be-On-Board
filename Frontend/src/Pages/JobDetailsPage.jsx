@@ -29,15 +29,48 @@ const JobDetailsPage = () => {
   const [bookmarked, setBookmarked] = useState(false);
 
   useEffect(() => {
-    const publishedJobs = JSON.parse(
-      localStorage.getItem("publishedJobs") || "[]",
-    );
-    const allJobs = [...publishedJobs, ...JOBS_DATA];
-    const foundJob = allJobs.find((j) => String(j.id) === String(id));
-    setJob(foundJob);
-    if (foundJob) {
-      setBookmarked(isJobSaved(foundJob.id));
-    }
+    const fetchJob = async () => {
+      try {
+        // Try backend first
+        const res = await fetch(`http://localhost:8080/api/jobs/${id}`);
+        if (res.ok) {
+          const j = await res.json();
+          const mapped = {
+            id: j.id,
+            jobTitle: j.title,
+            company: j.companyName,
+            logoUrl: j.companyLogo,
+            experience: j.experienceLevel,
+            jobType: j.jobType,
+            location: j.location,
+            minSalary: j.salary,
+            maxSalary: j.salary + 5,
+            description: j.description,
+            postedDaysAgo: Math.floor((new Date() - new Date(j.postedAt)) / (1000 * 60 * 60 * 24)),
+            applicants: 0,
+            skills: j.skills || []
+          };
+          setJob(mapped);
+          setBookmarked(isJobSaved(mapped.id));
+          return;
+        }
+      } catch (err) {
+        console.warn("Backend job fetch failed, checking local:", err);
+      }
+
+      // Fallback to local
+      const publishedJobs = JSON.parse(
+        localStorage.getItem("publishedJobs") || "[]"
+      );
+      const allJobs = [...publishedJobs, ...JOBS_DATA];
+      const foundJob = allJobs.find((j) => String(j.id) === String(id));
+      setJob(foundJob);
+      if (foundJob) {
+        setBookmarked(isJobSaved(foundJob.id));
+      }
+    };
+
+    fetchJob();
   }, [id]);
 
   const handleBookmarkToggle = () => {

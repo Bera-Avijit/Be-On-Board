@@ -12,6 +12,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.Arrays;
+import org.springframework.security.config.Customizer;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -49,7 +54,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            // 🛡️ Disable CSRF (Cross-Site Request Forgery) because we are using JWT tokens, not cookies.
+            // 🛡️ 1. Enable CORS (Cross-Origin Resource Sharing)
+            // This is MANDATORY for React (Port 5173) to talk to Spring Boot (Port 8080).
+            .cors(Customizer.withDefaults())
+            
+            // 🛡️ 2. Disable CSRF
             .csrf(csrf -> csrf.disable())
 
             // 🛡️ Set Session Management to STATELESS
@@ -58,8 +67,10 @@ public class SecurityConfig {
 
             // 🛡️ Define URL Access Rules
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll() // Allow everyone to use Signup and Login routes
-                .anyRequest().authenticated()               // Protect ALL other routes
+                .requestMatchers("/api/auth/**").permitAll() // Allow Signup and Login
+                .requestMatchers("/api/jobs/create").hasRole("RECRUITER") // Only Recruiters can post
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/jobs/**").permitAll() // Everyone can view jobs
+                .anyRequest().authenticated() // Protect ALL other routes
             )
             
 /* 
@@ -73,5 +84,23 @@ public class SecurityConfig {
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    /**
+     * CORS Configuration Source
+     * This explicitly tells the browser that requests from localhost:5173 are safe.
+     */
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://127.0.0.1:5173"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept", "X-Requested-With", "Origin"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L); // Cache CORS pre-flight for 1 hour
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

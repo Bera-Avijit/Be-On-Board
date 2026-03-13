@@ -158,19 +158,83 @@ const PostJob = () => {
         return () => clearTimeout(timer);
     }, [formData.location, activeDropdown]);
 
-    const handlePublish = () => {
-        const newJob = {
-            ...formData,
-            id: Date.now(),
-            postedDaysAgo: 0,
-            applicants: 0,
-            logoUrl: formData.companyLogo || `https://img.logo.dev/${formData.company.toLowerCase().replace(/\s/g, '')}.com?token=${LOGODEV_PK}`,
-            minSalary: Number(formData.salary),
-            maxSalary: Number(formData.salary) + 5
+    const handlePublish = async () => {
+        const payload = {
+            jobTitle: formData.jobTitle,
+            company: formData.company,
+            companyLogo: formData.companyLogo || `https://img.logo.dev/${formData.company.toLowerCase().replace(/\s/g, '')}.com?token=${LOGODEV_PK}`,
+            experience: formData.experience,
+            jobType: formData.jobType,
+            location: formData.location,
+            salary: Number(formData.salary),
+            skills: formData.skills,
+            description: formData.description
         };
-        const existingJobs = JSON.parse(localStorage.getItem('publishedJobs') || '[]');
-        localStorage.setItem('publishedJobs', JSON.stringify([newJob, ...existingJobs]));
-        window.location.href = '/find-jobs';
+
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert("Security error: No login session found. Please log in again.");
+                return;
+            }
+            
+            const res = await fetch('http://localhost:8080/api/jobs/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                console.log("Job posted successfully:", data);
+                // Clear publishedJobs from localStorage if we are now using the database
+                // localStorage.removeItem('publishedJobs'); 
+                window.location.href = '/find-jobs';
+            } else {
+                // Server responded with an error (e.g., 401, 403, 400)
+                let errorMessage = "Failed to post job";
+                try {
+                    const errorData = await res.json();
+                    errorMessage = errorData.message || errorMessage;
+                } catch (e) {
+                    // If response is not JSON
+                    if (res.status === 403) errorMessage = "Access Denied: Your session may have expired or you don't have recruiter permissions.";
+                    else if (res.status === 401) errorMessage = "Unauthorized: Please log in again.";
+                }
+                console.error("Server Denial:", res.status, errorMessage);
+                alert(`Server Error (${res.status}): ${errorMessage}`);
+                // Don't redirect if it's a real server denial!
+            }
+        } catch (err) {
+            // This only happens on actual network failures (server down, CORS block, etc.)
+            console.error("Network Detail:", err);
+            
+            // Helpful message for the user
+            const isCorsError = !err.response && err.message === "Failed to fetch";
+            if (isCorsError) {
+                alert("Connection Blocked: The browser blocked the request. Please ensure CORS is enabled in the Backend SecurityConfig and the backend is running.");
+            } else {
+                alert("Network error: Could not reach the server. Please make sure the backend is running at http://localhost:8080");
+            }
+
+            // FALLBACK for development purposes only
+            const newJobForFallback = {
+                ...formData,
+                id: Date.now(),
+                postedDaysAgo: 0,
+                applicants: 0,
+                logoUrl: payload.companyLogo,
+                minSalary: payload.salary,
+                maxSalary: payload.salary + 5
+            };
+            const existingJobs = JSON.parse(localStorage.getItem('publishedJobs') || '[]');
+            localStorage.setItem('publishedJobs', JSON.stringify([newJobForFallback, ...existingJobs]));
+            // Only redirect in fallback mode if the user specifically wants to test UI
+            window.location.href = '/find-jobs';
+        }
     };
 
     const addSkill = (skill) => {
@@ -250,7 +314,7 @@ const PostJob = () => {
                                     }}
                                     onFocus={() => setActiveDropdown('jobTitle')}
                                 />
-                                {activeDropdown === 'jobTitle' && (
+                                {activeDropdown === 'jobTitle' && autocomplete.jobTitles.filter(t => t.toLowerCase().includes(formData.jobTitle.toLowerCase())).length > 0 && (
                                     <div className="absolute top-full left-0 w-full mt-2 bg-[#121212] border border-mine-shaft-800 rounded-2xl shadow-2xl z-50 py-2 max-h-60 overflow-y-auto custom-scrollbar">
                                         {autocomplete.jobTitles.filter(t => t.toLowerCase().includes(formData.jobTitle.toLowerCase())).map(t => (
                                             <DropdownItem key={t} label={t} onClick={() => { setFormData({ ...formData, jobTitle: t }); setActiveDropdown(null); }} />
@@ -281,7 +345,7 @@ const PostJob = () => {
                                         }}
                                         onFocus={() => setActiveDropdown('company')}
                                     />
-                                    {activeDropdown === 'company' && (
+                                    {activeDropdown === 'company' && (autocomplete.companies.length > 0 || (formData.company.length === 0 && TOP_COMPANIES.length > 0)) && (
                                         <div className="absolute top-full left-0 w-full mt-2 bg-[#121212] border border-mine-shaft-800 rounded-2xl shadow-2xl z-50 py-2 max-h-60 overflow-y-auto custom-scrollbar">
                                             {(autocomplete.companies.length > 0 ? autocomplete.companies : TOP_COMPANIES).map((c, idx) => (
                                                 <div
@@ -387,7 +451,7 @@ const PostJob = () => {
                                     }}
                                     onFocus={() => setActiveDropdown('location')}
                                 />
-                                {activeDropdown === 'location' && (
+                                {activeDropdown === 'location' && autocomplete.locations.filter(l => l.toLowerCase().includes(formData.location.toLowerCase())).length > 0 && (
                                     <div className="absolute top-full left-0 w-full mt-2 bg-[#121212] border border-mine-shaft-800 rounded-2xl shadow-2xl z-50 py-2 max-h-60 overflow-y-auto custom-scrollbar">
                                         {autocomplete.locations.filter(l => l.toLowerCase().includes(formData.location.toLowerCase())).map(l => (
                                             <DropdownItem key={l} label={l} onClick={() => { setFormData({ ...formData, location: l }); setActiveDropdown(null); }} />
