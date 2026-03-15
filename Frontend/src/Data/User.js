@@ -1,10 +1,12 @@
 export const User = {
-  name: "Avijit Bera",
-  email: "avijit@example.com",
-  role: localStorage.getItem("userRole") || "RECRUITER", // Dynamic check for development
-  avatar: "/avatar.png",
-  membership: "Pro",
+  name: localStorage.getItem("userName") || "Guest User",
+  email: localStorage.getItem("userEmail") || "",
+  role: localStorage.getItem("userRole") || "CANDIDATE", 
+  avatar: localStorage.getItem("userAvatar") || "/avatar.png",
+  membership: "Basic",
 };
+
+export const isAuthenticated = () => !!localStorage.getItem("token");
 
 export const isRecruiter = () => User.role === "RECRUITER";
 export const isCandidate = () => User.role === "CANDIDATE";

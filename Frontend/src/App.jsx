@@ -19,6 +19,7 @@ import RecruiterDashboard from "./Pages/RecruiterDashboard";
 import CandidateDashboard from "./Pages/CandidateDashboard";
 import AdminTracking from "./Pages/AdminTracking";
 import BuildResume from "./Pages/BuildResume";
+import AuthPage from "./Pages/AuthPage";
 
 import ProtectedRoute from "./Components/Protected/ProtectedRoute";
 
@@ -121,6 +122,14 @@ const router = createBrowserRouter([
         element: <AboutUs />,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <AuthPage />,
+  },
+  {
+    path: "/signup",
+    element: <AuthPage />,
   },
   {
     path: "*",
