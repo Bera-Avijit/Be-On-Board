@@ -1,8 +1,8 @@
-import { IconBell, IconSettings, IconShieldCheck } from "@tabler/icons-react";
-import { Avatar, Indicator, Burger, Drawer, Stack, Divider, SegmentedControl, Text } from "@mantine/core";
+import { IconBell, IconSettings, IconShieldCheck, IconLogin, IconUserPlus } from "@tabler/icons-react";
+import { Avatar, Indicator, Burger, Drawer, Stack, Divider, SegmentedControl, Text, Button } from "@mantine/core";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDisclosure } from "@mantine/hooks";
-import { User, getNavLinks } from "../../Data/User";
+import { User, getNavLinks, isAuthenticated } from "../../Data/User";
 import NavLinks from "./NavLinks";
 import BrandLogo, { BrandMark, BrandWordmark } from "./BrandLogo";
 
@@ -10,11 +10,12 @@ const Header = () => {
   const [opened, { toggle, close }] = useDisclosure(false);
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const loggedIn = isAuthenticated();
   const links = getNavLinks(User.role);
 
-  const handleRoleChange = (value) => {
-    localStorage.setItem("userRole", value);
-    window.location.reload();
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
   };
 
   return (
@@ -33,53 +34,54 @@ const Header = () => {
       {/* ── Right: Profile & Actions ── */}
       <div className="flex-1 flex items-center justify-end gap-2 lg:gap-4 py-3">
 
-        {/* Role Switcher (Dev Mode) */}
-        <div className="hidden lg:flex items-center gap-2 bg-mine-shaft-900/40 p-1 rounded-xl border border-mine-shaft-800">
-          <SegmentedControl
-            value={User.role}
-            onChange={handleRoleChange}
-            data={[
-              { label: 'Candidate', value: 'CANDIDATE' },
-              { label: 'Recruiter', value: 'RECRUITER' },
-              { label: 'Admin', value: 'ADMIN' },
-            ]}
-            size="xs"
-            radius="lg"
-            classNames={{
-              root: "bg-transparent! border-none!",
-              control: "border-none!",
-              label: "text-mine-shaft-400! font-black! uppercase! tracking-tighter! hover:text-white!",
-              indicator: "bg-bright-sun-400! text-mine-shaft-950!"
-            }}
-          />
-        </div>
+        {loggedIn ? (
+          <>
+            {/* Profile pill — desktop */}
+            <div 
+              onClick={() => navigate(User.role === 'RECRUITER' ? '/recruiter-dashboard' : '/applications')}
+              className="hidden sm:flex items-center gap-2 bg-mine-shaft-900/60 py-1.5 px-3 rounded-full border border-mine-shaft-800 hover:border-bright-sun-400/40 hover:bg-mine-shaft-800 transition-all cursor-pointer group"
+            >
+              <Avatar
+                src={User.avatar}
+                alt="Profile"
+                size="sm"
+                radius="xl"
+                className="border border-mine-shaft-700 group-hover:border-bright-sun-400/50 transition-all"
+              />
+              <div className="flex flex-col leading-none">
+                <span className="text-[10px] font-black text-white uppercase tracking-widest leading-none mb-0.5">Profile</span>
+                <span className="text-[9px] text-mine-shaft-500 font-bold truncate max-w-[90px]">{User.name}</span>
+              </div>
+            </div>
 
-        {/* Profile pill — desktop */}
-        <div className="hidden sm:flex items-center gap-2 bg-mine-shaft-900/60 py-1.5 px-3 rounded-full border border-mine-shaft-800 hover:border-bright-sun-400/40 hover:bg-mine-shaft-800 transition-all cursor-pointer group">
-          <Avatar
-            src={User.avatar}
-            alt="Profile"
-            size="sm"
-            radius="xl"
-            className="border border-mine-shaft-700 group-hover:border-bright-sun-400/50 transition-all"
-          />
-          <div className="flex flex-col leading-none">
-            <span className="text-[10px] font-black text-white uppercase tracking-widest leading-none mb-0.5">Profile</span>
-            <span className="text-[9px] text-mine-shaft-500 font-bold truncate max-w-[90px]">{User.name}</span>
+            {/* Icon cluster */}
+            <div className="flex items-center gap-1.5">
+              <div 
+                onClick={handleLogout}
+                className="hidden xs:flex items-center justify-center bg-mine-shaft-900 hover:bg-red-500/10 p-2 rounded-xl text-mine-shaft-400 hover:text-red-400 cursor-pointer transition-all border border-mine-shaft-800 hover:border-red-500/30"
+                title="Logout"
+              >
+                <IconLogin stroke={1.5} size={18} className="rotate-180" />
+              </div>
+              <div className="flex items-center justify-center bg-mine-shaft-900 hover:bg-mine-shaft-800 p-2 rounded-xl text-mine-shaft-400 hover:text-bright-sun-400 cursor-pointer transition-all border border-mine-shaft-800 hover:border-bright-sun-400/30">
+                <Indicator color="red" offset={3} size={7} processing>
+                  <IconBell stroke={1.5} size={18} />
+                </Indicator>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="flex items-center gap-2">
+            <Link to="/login" className="px-5 py-2 text-xs font-black uppercase tracking-widest text-mine-shaft-400 hover:text-white transition-colors">
+              Login
+            </Link>
+            <Link to="/signup">
+              <button className="bg-bright-sun-400 text-mine-shaft-950 px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest hover:bg-bright-sun-300 transition-all shadow-[0_4px_14px_0_rgba(250,230,45,0.30)]">
+                Sign Up
+              </button>
+            </Link>
           </div>
-        </div>
-
-        {/* Icon cluster */}
-        <div className="flex items-center gap-1.5">
-          <div className="hidden xs:flex items-center justify-center bg-mine-shaft-900 hover:bg-mine-shaft-800 p-2 rounded-xl text-mine-shaft-400 hover:text-bright-sun-400 cursor-pointer transition-all border border-mine-shaft-800 hover:border-bright-sun-400/30">
-            <IconSettings stroke={1.5} size={18} />
-          </div>
-          <div className="flex items-center justify-center bg-mine-shaft-900 hover:bg-mine-shaft-800 p-2 rounded-xl text-mine-shaft-400 hover:text-bright-sun-400 cursor-pointer transition-all border border-mine-shaft-800 hover:border-bright-sun-400/30">
-            <Indicator color="red" offset={3} size={7} processing>
-              <IconBell stroke={1.5} size={18} />
-            </Indicator>
-          </div>
-        </div>
+        )}
 
         {/* Mobile burger */}
         <Burger

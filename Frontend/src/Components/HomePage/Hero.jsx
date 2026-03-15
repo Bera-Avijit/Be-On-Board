@@ -19,7 +19,7 @@ const Hero = () => {
     /* h-full: Fills the flex-1 space. 
        gap-10: Creates a physical "No-Entry" zone between left and right. 
        flex-col: Stacks vertically on mobile. */
-    <section className="relative flex h-full w-full flex-col md:flex-row items-center justify-between px-6 lg:px-20 gap-10 md:gap-16 bg-mine-shaft-950">
+    <section className="relative flex h-full w-full flex-col md:flex-row items-center justify-between px-6 lg:px-15 gap-10 md:gap-16 bg-mine-shaft-950">
       {/* LEFT SECTION: 3/5 Portion (60%) */}
       <div className="z-10 flex flex-col w-full md:w-3/5 space-y-6 lg:space-y-8 mt-10 md:mt-0 md:pt-4">
         <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-white leading-tight">
