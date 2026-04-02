@@ -25,6 +25,7 @@ const OtpForm = ({ email, onVerificationSuccess, toggleAuth, setIsPasswordFocuse
       });
       // Store tokens from backend AuthResponse
       localStorage.setItem("token", response.data.accessToken);
+      localStorage.setItem("refreshToken", response.data.refreshToken);
       localStorage.setItem("userName", response.data.name);
       localStorage.setItem("userEmail", response.data.email);
       localStorage.setItem("userRole", response.data.role);

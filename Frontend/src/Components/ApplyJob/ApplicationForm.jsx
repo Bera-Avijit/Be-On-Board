@@ -11,6 +11,7 @@ import {
   Divider,
   Notification,
   rem,
+  Select,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import {
@@ -34,6 +35,33 @@ import {
 
 const ApplicationForm = ({ jobId, jobTitle, company, appId = null }) => {
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [phonePrefix, setPhonePrefix] = useState("+91");
+  const [countries, setCountries] = useState([]);
+
+  useEffect(() => {
+    fetch(
+      "https://raw.githubusercontent.com/mledoze/countries/master/countries.json",
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        const formatted = data
+          .filter((c) => c.idd && c.idd.root)
+          .map((c) => {
+            const dialCode =
+              c.idd.root + (c.idd.suffixes ? c.idd.suffixes[0] : "");
+            return {
+              value: c.cca2,
+              label: `${c.flag || "🌐"} ${dialCode}`,
+              name: c.name.common,
+              dialCode: dialCode,
+            };
+          })
+          .sort((a, b) => a.name.localeCompare(b.name));
+        setCountries(formatted);
+      })
+      .catch((err) => console.error("Error fetching countries:", err));
+  }, []);
 
   const form = useForm({
     initialValues: {
@@ -80,23 +108,26 @@ const ApplicationForm = ({ jobId, jobTitle, company, appId = null }) => {
   }, [appId]);
 
   const handleSubmit = (values) => {
+    setIsSubmitting(true);
     const payload = {
       ...values,
       jobId,
       jobTitle,
       company,
-      resume: values.resume ? values.resume.name : appId ? null : null, // Handle resume name logic
+      phone: `${phonePrefix} ${values.phone}`,
+      resume: values.resume ? values.resume.name : appId ? null : null,
     };
 
-    if (appId) {
-      // Remove null resume to not overwrite if not re-uploaded
-      if (!values.resume) delete payload.resume;
-      updateApplicationDetails(appId, payload);
-    } else {
-      addApplication(payload);
-    }
-
-    setSubmitted(true);
+    setTimeout(() => {
+      if (appId) {
+        if (!values.resume) delete payload.resume;
+        updateApplicationDetails(appId, payload);
+      } else {
+        addApplication(payload);
+      }
+      setIsSubmitting(false);
+      setSubmitted(true);
+    }, 1500); // Realistic backend delay
   };
 
   if (submitted) {
@@ -193,14 +224,51 @@ const ApplicationForm = ({ jobId, jobTitle, company, appId = null }) => {
             withAsterisk
             placeholder="10 digit mobile number"
             leftSection={
-              <IconPhone size={18} className="text-bright-sun-400" />
+              <Select
+                value={
+                  countries.find((c) => c.dialCode === phonePrefix)?.value ||
+                  "IN"
+                }
+                onChange={(val) => {
+                  const country = countries.find((c) => c.value === val);
+                  if (country) {
+                    setPhonePrefix(country.dialCode);
+                  }
+                }}
+                data={countries}
+                searchable
+                placeholder="Search"
+                variant="unstyled"
+                allowDeselect={false}
+                rightSection={null}
+                classNames={{
+                  input:
+                    "!text-white !font-bold !text-[10px] w-[92px] !pl-2 !pr-2 !min-h-0 h-full flex items-center justify-center cursor-pointer",
+                  dropdown:
+                    "!bg-mine-shaft-900 !border !border-mine-shaft-800 !rounded-xl !shadow-2xl",
+                  option:
+                    "hover:!bg-mine-shaft-800 !text-white !text-xs !py-3 !px-4 transition-colors",
+                  optionsList:
+                    "overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-mine-shaft-700 [&::-webkit-scrollbar-thumb]:rounded-full",
+                  search:
+                    "!bg-mine-shaft-950 !text-white !border-mine-shaft-800 focus:!border-bright-sun-400 !rounded-lg !mb-2 !mx-2 !w-[calc(100%-12px)]",
+                }}
+                comboboxProps={{
+                  transitionProps: { transition: "pop-top-left", duration: 200 },
+                  shadow: "xl",
+                  width: 250,
+                  position: "bottom-start",
+                  withinPortal: true,
+                }}
+              />
             }
+            leftSectionWidth={92}
             {...form.getInputProps("phone")}
             classNames={{
               label:
                 "text-mine-shaft-200! font-bold! mb-2! uppercase! text-[10px]! tracking-widest!",
               input:
-                "bg-mine-shaft-900/50! border-mine-shaft-700! text-white! rounded-xl! focus:border-bright-sun-400! transition-all! h-12! font-medium! placeholder:text-mine-shaft-400!",
+                "bg-mine-shaft-900/50! border-mine-shaft-700! text-white! rounded-xl! focus:border-bright-sun-400! transition-all! h-12! font-medium! placeholder:text-mine-shaft-400! !pl-[100px]",
             }}
           />
 
@@ -331,9 +399,11 @@ const ApplicationForm = ({ jobId, jobTitle, company, appId = null }) => {
             size="lg"
             radius="xl"
             color="yellow"
+            loading={isSubmitting}
+            loaderProps={{ type: "dots" }}
             className="bg-bright-sun-400! text-mine-shaft-950! hover:bg-bright-sun-500! font-black px-12 uppercase tracking-tighter"
           >
-            Submit Application
+            {appId ? "Update Application" : "Submit Application"}
           </Button>
         </Group>
       </form>

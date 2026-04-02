@@ -32,7 +32,14 @@ export const getNavLinks = (role) => {
 
   const adminLinks = [{ name: "Global Tracking", url: "/admin/tracking" }];
 
-  if (role === "RECRUITER") return [...commonLinks, ...recruiterLinks];
+  if (role === "RECRUITER")
+    return [
+      { name: "Find Jobs", url: "/find-jobs" },
+      { name: "Find Talents", url: "/find-talents" },
+      { name: "Post Job", url: "/post-jobs" },
+      { name: "Dashboard", url: "/recruiter-dashboard" },
+      { name: "About Us", url: "/about-us" },
+    ];
   if (role === "CANDIDATE")
     return [
       { name: "Find Jobs", url: "/find-jobs" },

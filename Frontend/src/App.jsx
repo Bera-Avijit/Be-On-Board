@@ -20,6 +20,7 @@ import CandidateDashboard from "./Pages/CandidateDashboard";
 import AdminTracking from "./Pages/AdminTracking";
 import BuildResume from "./Pages/BuildResume";
 import AuthPage from "./Pages/AuthPage";
+import ProfilePage from "./Pages/ProfilePage";
 
 import ProtectedRoute from "./Components/Protected/ProtectedRoute";
 
@@ -78,6 +79,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={["RECRUITER"]}>
             <RecruiterDashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "profile",
+        element: (
+          <ProtectedRoute allowedRoles={["RECRUITER", "CANDIDATE", "ADMIN"]}>
+            <ProfilePage />
           </ProtectedRoute>
         ),
       },

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Button } from '@mantine/core';
+import { Text, Button, Loader } from '@mantine/core';
 import { IconSearchOff } from '@tabler/icons-react';
 import JobCard from './JobCard';
 import { JOBS_DATA } from '../../Data/JobsData';
@@ -95,7 +95,11 @@ const Jobs = ({ filters, sortOption, resetFilters }) => {
 
     return (
         <div className="py-6 min-h-[500px]">
-            {processedJobs.length > 0 ? (
+            {isLoading ? (
+                <div className="flex items-center justify-center py-40">
+                    <Loader color="yellow" size="xl" type="bars" />
+                </div>
+            ) : processedJobs.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 transition-all duration-300">
                     {processedJobs.map((job) => (
                         <JobCard key={job.id} job={job} />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { IconSearch, IconBuilding, IconMapPin, IconBriefcase, IconClock, IconCurrencyDollar, IconChevronLeft, IconDeviceFloppy, IconRocket, IconX, IconChevronDown } from '@tabler/icons-react';
+import { IconSearch, IconBuilding, IconMapPin, IconBriefcase, IconClock, IconCurrencyDollar, IconChevronLeft, IconDeviceFloppy, IconRocket, IconX, IconChevronDown, IconPlus, IconListCheck } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import { RichTextEditor } from '@mantine/tiptap';
 import { useEditor } from '@tiptap/react';
@@ -54,23 +54,40 @@ const PostJob = () => {
     const [activeDropdown, setActiveDropdown] = useState(null); // 'jobTitle', 'company', 'experience', 'jobType', 'location'
     const [skillInput, setSkillInput] = useState('');
 
-    // Editor setup
-    const editor = useEditor({
-        extensions: [
-            StarterKit,
-            Underline,
-            LinkExtension,
-            Placeholder.configure({
-                placeholder: 'About the job, Responsibilities, Skill set, etc...',
-            }),
-            TextAlign.configure({ types: ['heading', 'paragraph'] }),
-            Highlight,
-        ],
-        content: '',
-        onUpdate: ({ editor }) => {
-            setFormData(prev => ({ ...prev, description: editor.getHTML() }));
-        }
+    const [descriptionSections, setDescriptionSections] = useState({
+        about: '',
+        responsibilities: ['']
     });
+
+    const addResponsibility = () => {
+        setDescriptionSections(prev => ({
+            ...prev,
+            responsibilities: [...prev.responsibilities, '']
+        }));
+    };
+
+    const updateResponsibility = (index, value) => {
+        const updated = [...descriptionSections.responsibilities];
+        updated[index] = value;
+        setDescriptionSections(prev => ({
+            ...prev,
+            responsibilities: updated
+        }));
+    };
+
+    const removeResponsibility = (index) => {
+        if (descriptionSections.responsibilities.length === 1) return;
+        setDescriptionSections(prev => ({
+            ...prev,
+            responsibilities: prev.responsibilities.filter((_, i) => i !== index)
+        }));
+    };
+
+    // Combine sections for the backend payload
+    useEffect(() => {
+        const combined = `STRUCT_DESC:${JSON.stringify(descriptionSections)}`;
+        setFormData(prev => ({ ...prev, description: combined }));
+    }, [descriptionSections]);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -478,160 +495,94 @@ const PostJob = () => {
                         </div>
                     </div>
 
-                    {/* Skills Tag Input */}
-                    <div className="mb-12">
-                        <CustomLabel>Required Skills</CustomLabel>
-                        <div className="w-full bg-[#111111] border border-mine-shaft-800 rounded-3xl p-3 min-h-[60px] flex flex-wrap gap-2 items-center focus-within:border-bright-sun-400/50 transition-all shadow-inner">
-                            {formData.skills.map(skill => (
-                                <div key={skill} className="flex items-center gap-2 bg-mine-shaft-900 border border-mine-shaft-800 text-bright-sun-400 px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider group/tag">
-                                    {skill}
-                                    <IconX
-                                        size={14}
-                                        className="cursor-pointer text-mine-shaft-500 hover:text-red-400 transition-colors"
-                                        onClick={() => removeSkill(skill)}
-                                    />
-                                </div>
-                            ))}
-                            <input
-                                type="text"
-                                placeholder={formData.skills.length === 0 ? "Type skill and press Enter..." : "Add more..."}
-                                className="flex-1 bg-transparent border-none outline-none text-sm font-semibold text-white min-w-[150px] px-2 py-1 placeholder:text-mine-shaft-600"
-                                value={skillInput}
-                                onChange={(e) => setSkillInput(e.target.value)}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter') {
-                                        e.preventDefault();
-                                        addSkill(skillInput);
-                                    }
-                                }}
-                            />
+                    {/* Structured Job Description */}
+                    <div className="mb-12 space-y-10">
+                        {/* Section 1: About */}
+                        <div className="group">
+                            <CustomLabel>About the Job</CustomLabel>
+                            <div className="bg-[#111111] border border-mine-shaft-800 rounded-3xl p-1 overflow-hidden focus-within:border-bright-sun-400/50 transition-all shadow-inner">
+                                <textarea
+                                    placeholder="Provide a compelling overview of the role and team..."
+                                    className="w-full bg-transparent border-none outline-none text-sm font-semibold text-mine-shaft-100 py-3.5 px-6 min-h-[50px] resize-none overflow-hidden scroll-smooth placeholder:text-mine-shaft-700 leading-relaxed"
+                                    rows={1}
+                                    value={descriptionSections.about}
+                                    onChange={(e) => {
+                                        setDescriptionSections({ ...descriptionSections, about: e.target.value });
+                                        e.target.style.height = "auto";
+                                        e.target.style.height = e.target.scrollHeight + "px";
+                                    }}
+                                />
+                            </div>
                         </div>
-                    </div>
 
-                    {/* Job Description with Custom Dark Styles on Mantine Editor */}
-                    <div className="mb-12">
-                        <CustomLabel>Job Description</CustomLabel>
-                        <div className="rounded-4xl border border-mine-shaft-900 overflow-hidden bg-[#0a0a0a] shadow-2xl editor-container">
-                            <style>{`
-                                .editor-container .mantine-RichTextEditor-root {
-                                    background: #0a0a0a !important;
-                                    border: none !important;
-                                }
-                                .editor-container .mantine-RichTextEditor-toolbar {
-                                    background: #121212 !important;
-                                    border-bottom: 1px solid #1a1a1a !important;
-                                    padding: 12px !important;
-                                }
-                                .editor-container .mantine-RichTextEditor-controlsGroup {
-                                    background: transparent !important;
-                                    border: 1px solid #1a1a1a !important;
-                                }
-                                .editor-container .mantine-RichTextEditor-control {
-                                    background: #151515 !important;
-                                    border: none !important;
-                                    color: #959595 !important;
-                                    transition: all 0.2s ease !important;
-                                }
-                                .editor-container .mantine-RichTextEditor-control:hover {
-                                    background: #252525 !important;
-                                    color: #fae62d !important;
-                                }
-                                .editor-container .mantine-RichTextEditor-control[data-active] {
-                                    background: rgba(250, 230, 45, 0.1) !important;
-                                    color: #fae62d !important;
-                                }
-                                .editor-container .mantine-RichTextEditor-content {
-                                    background: #0a0a0a !important;
-                                }
-                                .editor-container .ProseMirror {
-                                    color: #bbb !important;
-                                    padding: 32px !important;
-                                    min-height: 350px !important;
-                                    font-size: 15px !important;
-                                    outline: none !important;
-                                }
-                                .editor-container .ProseMirror h3 {
-                                    color: #fae62d !important;
-                                    font-weight: 800 !important;
-                                    text-transform: uppercase !important;
-                                    letter-spacing: 1px !important;
-                                    margin-bottom: 1rem !important;
-                                }
-                                .editor-container .ProseMirror code {
-                                    background: #1a1a1a !important;
-                                    color: #fae62d !important;
-                                    padding: 0.2rem 0.4rem !important;
-                                    border-radius: 4px !important;
-                                    font-family: 'JetBrains Mono', monospace !important;
-                                }
-                                .editor-container .ProseMirror pre {
-                                    background: #0d0d0d !important;
-                                    border: 1px solid #1a1a1a !important;
-                                    border-radius: 12px !important;
-                                    padding: 1.5rem !important;
-                                    margin: 1rem 0 !important;
-                                }
-                                .editor-container .ProseMirror pre code {
-                                    background: transparent !important;
-                                    padding: 0 !important;
-                                    color: #eee !important;
-                                }
-                                .editor-container .ProseMirror blockquote {
-                                    border-left: 4px solid #fae62d !important;
-                                    padding-left: 1.5rem !important;
-                                    margin-left: 0 !important;
-                                    font-style: italic !important;
-                                    color: #888 !important;
-                                }
-                                .editor-container .ProseMirror mark {
-                                    background-color: rgba(250, 230, 45, 0.3) !important;
-                                    color: #fff !important;
-                                    padding: 0.1rem 0.2rem !important;
-                                    border-radius: 2px !important;
-                                }
-                                .editor-container .ProseMirror p.is-editor-empty:first-child::before {
-                                    content: attr(data-placeholder);
-                                    float: left;
-                                    color: #555 !important;
-                                    pointer-events: none;
-                                    height: 0;
-                                    font-style: italic;
-                                }
-                            `}</style>
-                            <RichTextEditor editor={editor}>
-                                <RichTextEditor.Toolbar>
-                                    <RichTextEditor.ControlsGroup>
-                                        <RichTextEditor.Bold />
-                                        <RichTextEditor.Italic />
-                                        <RichTextEditor.Underline />
-                                        <RichTextEditor.Strikethrough />
-                                        <RichTextEditor.Highlight />
-                                        <RichTextEditor.Code />
-                                        <RichTextEditor.CodeBlock />
-                                    </RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.ControlsGroup>
-                                        <RichTextEditor.H1 />
-                                        <RichTextEditor.H2 />
-                                        <RichTextEditor.H3 />
-                                        <RichTextEditor.Blockquote />
-                                    </RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.ControlsGroup>
-                                        <RichTextEditor.AlignLeft />
-                                        <RichTextEditor.AlignCenter />
-                                        <RichTextEditor.AlignRight />
-                                        <RichTextEditor.AlignJustify />
-                                    </RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.ControlsGroup>
-                                        <RichTextEditor.BulletList />
-                                        <RichTextEditor.OrderedList />
-                                    </RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.ControlsGroup>
-                                        <RichTextEditor.Link />
-                                        <RichTextEditor.Unlink />
-                                    </RichTextEditor.ControlsGroup>
-                                </RichTextEditor.Toolbar>
-                                <RichTextEditor.Content />
-                            </RichTextEditor>
+                        {/* Section 2: Responsibilities */}
+                        <div className="group">
+                            <div className="flex justify-between items-center mb-4">
+                                <CustomLabel>Key Responsibilities</CustomLabel>
+                                <button
+                                    onClick={addResponsibility}
+                                    className="flex items-center gap-2 text-[10px] font-black text-bright-sun-400 bg-bright-sun-400/10 px-4 py-2 rounded-full hover:bg-bright-sun-400 hover:text-mine-shaft-950 transition-all uppercase tracking-widest border border-bright-sun-400/20"
+                                >
+                                    <IconPlus size={14} /> Add Responsibility
+                                </button>
+                            </div>
+                            
+                            <div className="space-y-4">
+                                {descriptionSections.responsibilities.map((resp, idx) => (
+                                    <div key={idx} className="flex gap-4 group/item animate-in fade-in slide-in-from-left-4 duration-300">
+                                        <div className="w-10 h-10 bg-mine-shaft-900 border border-mine-shaft-800 rounded-xl flex items-center justify-center shrink-0 shadow-sm text-bright-sun-400 font-black text-xs">
+                                            {idx + 1}
+                                        </div>
+                                        <div className="flex-1 relative">
+                                            <input
+                                                type="text"
+                                                placeholder={`Responsibility #${idx + 1}...`}
+                                                className="w-full bg-[#111111] border border-mine-shaft-800 rounded-xl py-3 px-5 text-sm font-bold text-white outline-none focus:border-bright-sun-400/50 focus:bg-[#151515] transition-all placeholder:text-mine-shaft-700 shadow-inner pr-12"
+                                                value={resp}
+                                                onChange={(e) => updateResponsibility(idx, e.target.value)}
+                                            />
+                                            {descriptionSections.responsibilities.length > 1 && (
+                                                <button
+                                                    onClick={() => removeResponsibility(idx)}
+                                                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-mine-shaft-600 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all opacity-0 group-hover/item:opacity-100"
+                                                >
+                                                    <IconX size={16} />
+                                                </button>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Section 3: Skills (Moved here for clean flow) */}
+                        <div className="group">
+                            <CustomLabel>Required Skills</CustomLabel>
+                            <div className="w-full bg-[#111111] border border-mine-shaft-800 rounded-3xl p-3 min-h-[60px] flex flex-wrap gap-2 items-center focus-within:border-bright-sun-400/50 transition-all shadow-inner">
+                                {formData.skills.map(skill => (
+                                    <div key={skill} className="flex items-center gap-2 bg-mine-shaft-900 border border-mine-shaft-800 text-bright-sun-400 px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider group/tag">
+                                        {skill}
+                                        <IconX
+                                            size={14}
+                                            className="cursor-pointer text-mine-shaft-500 hover:text-red-400 transition-colors"
+                                            onClick={() => removeSkill(skill)}
+                                        />
+                                    </div>
+                                ))}
+                                <input
+                                    type="text"
+                                    placeholder={formData.skills.length === 0 ? "Type skill and press Enter..." : "Add more..."}
+                                    className="flex-1 bg-transparent border-none outline-none text-sm font-semibold text-white min-w-[150px] px-2 py-1 placeholder:text-mine-shaft-600"
+                                    value={skillInput}
+                                    onChange={(e) => setSkillInput(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            e.preventDefault();
+                                            addSkill(skillInput);
+                                        }
+                                    }}
+                                />
+                            </div>
                         </div>
                     </div>
 
