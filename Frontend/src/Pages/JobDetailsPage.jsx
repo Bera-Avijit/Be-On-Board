@@ -8,6 +8,7 @@ import {
   Divider,
   List,
   Avatar,
+  Loader,
 } from "@mantine/core";
 import {
   IconMapPin,
@@ -26,39 +27,60 @@ import { saveJob, unsaveJob, isJobSaved } from "../Data/ApplicationData";
 const JobDetailsPage = () => {
   const { id } = useParams();
   const [job, setJob] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [bookmarked, setBookmarked] = useState(false);
 
   useEffect(() => {
     const fetchJob = async () => {
       try {
+        setLoading(true);
         // Try backend first
         const res = await fetch(`http://localhost:8080/api/jobs/${id}`);
         if (res.ok) {
           const j = await res.json();
+          
+          let description = j.description || "";
+          let responsibilities = [];
+          
+          if (description.startsWith("STRUCT_DESC:")) {
+            try {
+              const struct = JSON.parse(description.replace("STRUCT_DESC:", ""));
+              description = struct.about || "";
+              responsibilities = struct.responsibilities || [];
+            } catch (e) {
+              console.error("Failed to parse structured description", e);
+            }
+          }
+
           const mapped = {
             id: j.id,
-            jobTitle: j.title,
-            company: j.companyName,
-            logoUrl: j.companyLogo,
-            experience: j.experienceLevel,
-            jobType: j.jobType,
-            location: j.location,
-            minSalary: j.salary,
-            maxSalary: j.salary + 5,
-            description: j.description,
-            postedDaysAgo: Math.floor((new Date() - new Date(j.postedAt)) / (1000 * 60 * 60 * 24)),
+            jobTitle: j.title || "Untitled Role",
+            company: j.companyName || "Unknown Company",
+            logoUrl: j.companyLogo || "https://via.placeholder.com/150",
+            experience: j.experienceLevel || "Not specified",
+            jobType: j.jobType || "Full-time",
+            location: j.location || "Remote",
+            minSalary: j.salary || 0,
+            maxSalary: (j.salary || 0) + 5,
+            description: description,
+            responsibilities: responsibilities,
+            postedDaysAgo: j.postedAt ? Math.floor((new Date() - new Date(j.postedAt)) / (1000 * 60 * 60 * 24)) : 0,
             applicants: 0,
             skills: j.skills || []
           };
           setJob(mapped);
           setBookmarked(isJobSaved(mapped.id));
+          setLoading(false);
           return;
         }
       } catch (err) {
         console.warn("Backend job fetch failed, checking local:", err);
+      } finally {
+        // Fallback to local if no job found in backend AND no error thrown? 
+        // Actually the 'return' above handles success.
       }
 
-      // Fallback to local
+      // Fallback to local if backend failed or not found
       const publishedJobs = JSON.parse(
         localStorage.getItem("publishedJobs") || "[]"
       );
@@ -68,6 +90,7 @@ const JobDetailsPage = () => {
       if (foundJob) {
         setBookmarked(isJobSaved(foundJob.id));
       }
+      setLoading(false);
     };
 
     fetchJob();
@@ -83,6 +106,14 @@ const JobDetailsPage = () => {
       setBookmarked(true);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-mine-shaft-950 flex items-center justify-center">
+        <Loader color="yellow" size="xl" type="bars" />
+      </div>
+    );
+  }
 
   if (!job) {
     return (
@@ -226,26 +257,34 @@ const JobDetailsPage = () => {
                   }
                   className="text-mine-shaft-200"
                 >
-                  <List.Item>
-                    Drive technical excellence and implementation across the
-                    engineering team.
-                  </List.Item>
-                  <List.Item>
-                    Collaborate with product managers and designers to create
-                    world-class features.
-                  </List.Item>
-                  <List.Item>
-                    Optimize performance and scalability of core architectural
-                    components.
-                  </List.Item>
-                  <List.Item>
-                    Mentor junior developers and promote high-quality coding
-                    standards.
-                  </List.Item>
-                  <List.Item>
-                    Participate in architectural reviews and long-term technical
-                    planning.
-                  </List.Item>
+                  {(job.responsibilities && job.responsibilities.length > 0 && job.responsibilities[0] !== "") ? (
+                    job.responsibilities.map((resp, index) => (
+                      <List.Item key={index}>{resp}</List.Item>
+                    ))
+                  ) : (
+                    <>
+                      <List.Item>
+                        Drive technical excellence and implementation across the
+                        engineering team.
+                      </List.Item>
+                      <List.Item>
+                        Collaborate with product managers and designers to create
+                        world-class features.
+                      </List.Item>
+                      <List.Item>
+                        Optimize performance and scalability of core architectural
+                        components.
+                      </List.Item>
+                      <List.Item>
+                        Mentor junior developers and promote high-quality coding
+                        standards.
+                      </List.Item>
+                      <List.Item>
+                        Participate in architectural reviews and long-term technical
+                        planning.
+                      </List.Item>
+                    </>
+                  )}
                 </List>
               </section>
 

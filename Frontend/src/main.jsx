@@ -5,6 +5,7 @@ import { Notifications } from "@mantine/notifications";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import "./index.css";
+import "./axiosConfig";
 import App from "./App.jsx";
 
 const theme = createTheme({

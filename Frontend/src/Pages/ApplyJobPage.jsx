@@ -14,17 +14,37 @@ const ApplyJobPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate data fetching
-    const publishedJobs = JSON.parse(
-      localStorage.getItem("publishedJobs") || "[]",
-    );
-    const allJobs = [...publishedJobs, ...JOBS_DATA];
-    const foundJob = allJobs.find((j) => String(j.id) === String(id));
+    const fetchJob = async () => {
+      try {
+        setLoading(true);
+        // Try backend first
+        const res = await fetch(`http://localhost:8080/api/jobs/${id}`);
+        if (res.ok) {
+          const j = await res.json();
+          const mapped = {
+            id: j.id,
+            jobTitle: j.title || "Untitled Role",
+            company: j.companyName || "Unknown Company",
+          };
+          setJob(mapped);
+          setLoading(false);
+          return;
+        }
+      } catch (err) {
+        console.warn("Backend fetch failed in Apply page, checking local:", err);
+      }
 
-    setTimeout(() => {
+      // Fallback to local
+      const publishedJobs = JSON.parse(
+        localStorage.getItem("publishedJobs") || "[]",
+      );
+      const allJobs = [...publishedJobs, ...JOBS_DATA];
+      const foundJob = allJobs.find((j) => String(j.id) === String(id));
       setJob(foundJob);
       setLoading(false);
-    }, 500);
+    };
+
+    fetchJob();
   }, [id]);
 
   if (loading) {

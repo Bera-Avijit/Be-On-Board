@@ -8,6 +8,7 @@ import {
   Divider,
   Button,
 } from "@mantine/core";
+import { Link } from "react-router-dom";
 import {
   IconMapPin,
   IconBookmark,
@@ -152,8 +153,8 @@ const JobCard = ({ job }) => {
       </div>
 
       <Button
-        component="a"
-        href={`/job-details/${job.id}`}
+        component={Link}
+        to={`/job-details/${job.id}`}
         fullWidth
         variant="outline"
         color="yellow"

@@ -1,5 +1,5 @@
-import { IconBell, IconSettings, IconShieldCheck, IconLogin, IconUserPlus } from "@tabler/icons-react";
-import { Avatar, Indicator, Burger, Drawer, Stack, Divider, SegmentedControl, Text, Button } from "@mantine/core";
+import { IconBell, IconSettings, IconShieldCheck, IconLogin, IconUserPlus, IconUser, IconFileText, IconLogout } from "@tabler/icons-react";
+import { Avatar, Indicator, Burger, Drawer, Stack, Divider, SegmentedControl, Text, Button, Menu } from "@mantine/core";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDisclosure } from "@mantine/hooks";
 import { User, getNavLinks, isAuthenticated } from "../../Data/User";
@@ -36,23 +36,59 @@ const Header = () => {
 
         {loggedIn ? (
           <>
-            {/* Profile pill — desktop */}
-            <div 
-              onClick={() => navigate(User.role === 'RECRUITER' ? '/recruiter-dashboard' : '/applications')}
-              className="hidden sm:flex items-center gap-2 bg-mine-shaft-900/60 py-1.5 px-3 rounded-full border border-mine-shaft-800 hover:border-bright-sun-400/40 hover:bg-mine-shaft-800 transition-all cursor-pointer group"
-            >
-              <Avatar
-                src={User.avatar}
-                alt="Profile"
-                size="sm"
-                radius="xl"
-                className="border border-mine-shaft-700 group-hover:border-bright-sun-400/50 transition-all"
-              />
-              <div className="flex flex-col leading-none">
-                <span className="text-[10px] font-black text-white uppercase tracking-widest leading-none mb-0.5">Profile</span>
-                <span className="text-[9px] text-mine-shaft-500 font-bold truncate max-w-[90px]">{User.name}</span>
-              </div>
-            </div>
+            {/* Profile Menu Dropdown — desktop */}
+            <Menu shadow="xl" width={220} position="bottom-end" transitionProps={{ transition: 'pop-top-right' }} offset={12}>
+              <Menu.Target>
+                <div 
+                  className="hidden sm:flex items-center gap-2 bg-mine-shaft-900/60 py-1.5 px-3 rounded-full border border-mine-shaft-800 hover:border-bright-sun-400/40 hover:bg-mine-shaft-800 transition-all cursor-pointer group"
+                >
+                  <Avatar
+                    src={User.avatar}
+                    alt="Profile"
+                    size="sm"
+                    radius="xl"
+                    className="border border-mine-shaft-700 group-hover:border-bright-sun-400/50 transition-all"
+                  />
+                  <div className="flex flex-col leading-none">
+                    <span className="text-[10px] font-black text-white uppercase tracking-widest leading-none mb-0.5">Profile</span>
+                    <span className="text-[9px] text-mine-shaft-500 font-bold truncate max-w-[90px]">{User.name}</span>
+                  </div>
+                </div>
+              </Menu.Target>
+
+              <Menu.Dropdown className="!bg-mine-shaft-950 !border !border-mine-shaft-800 !rounded-xl py-2 shadow-2xl overflow-hidden">
+                <Menu.Item 
+                  leftSection={<IconUser size={16} />} 
+                  onClick={() => navigate('/profile')}
+                  className="!text-mine-shaft-300 hover:!text-bright-sun-400 font-medium px-4 py-2 hover:!bg-mine-shaft-900/80 transition-all mx-1 !rounded-lg"
+                >
+                  Manage Profile
+                </Menu.Item>
+                <Menu.Item 
+                  leftSection={<IconSettings size={16} />} 
+                  className="!text-mine-shaft-300 hover:!text-bright-sun-400 font-medium px-4 py-2 hover:!bg-mine-shaft-900/80 transition-all mx-1 !rounded-lg"
+                >
+                  Settings
+                </Menu.Item>
+                <Menu.Item 
+                  leftSection={<IconFileText size={16} />} 
+                  onClick={() => navigate(User.role === 'RECRUITER' ? '/recruiter-dashboard' : '/applications')}
+                  className="!text-mine-shaft-300 hover:!text-bright-sun-400 font-medium px-4 py-2 hover:!bg-mine-shaft-900/80 transition-all mx-1 !rounded-lg"
+                >
+                  {User.role === 'RECRUITER' ? 'Dashboard' : 'Applications'}
+                </Menu.Item>
+
+                <Menu.Divider className="!border-mine-shaft-800 my-2" />
+                
+                <Menu.Item 
+                  leftSection={<IconLogout size={16} />} 
+                  onClick={handleLogout} 
+                  className="!text-red-400 hover:!bg-red-500/10 hover:!text-red-300 font-medium px-4 py-2 transition-all mx-1 !rounded-lg"
+                >
+                  Logout
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
 
             {/* Icon cluster */}
             <div className="flex items-center gap-1.5">
